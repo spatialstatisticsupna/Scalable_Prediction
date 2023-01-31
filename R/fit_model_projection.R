@@ -3,8 +3,6 @@ rm(list = ls())
 ## Packages loading ##
 ######################
 
-# install.packages("bigDM")
-# install.packages("INLA", repos=c(getOption("repos"), INLA="https://inla.r-inla-download.org/R/stable"), dep=TRUE)
 library(bigDM)
 library(INLA)
 
@@ -13,14 +11,26 @@ library(INLA)
 ################################################################################
 
 data <- read.table(file = "data/Data_LungCancer.txt", header = TRUE)
-# data <- read.table(file = "data/Data_GlobalCancer.txt", header = TRUE)
 Carto_SpainMUN$ID.prov <- substr(Carto_SpainMUN$ID, 1, 2)
+
+###############################################################
+## Note: You must specify with NA the values to be predicted ##
+###############################################################
+
 pred <- 2013:2015
 data$obs[data$year %in% pred] <- NA
 
 ####################
 ## fitting models ##
 ####################
+
+##################################################################
+## Note : R_INLA version 22.12.16 by default use "compact" mode ## 
+## (variational Bayes, from Van Niekerk, J. et. al. (2023). For ##
+## change to classical mode, use the following command          ##
+##################################################################
+
+# inla.setOption(inla.mode="classic")
 
 ## classical models 
 
