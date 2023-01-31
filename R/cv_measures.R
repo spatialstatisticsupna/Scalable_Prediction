@@ -12,6 +12,6 @@ CV <- function(x, m=3, groups=NULL, strategy="prior", size.max = 32){
     }
     return(list(LOOCV = LOOCV, LGOCV = LGOCV))
   } else {
-    print("x must be a inla object with ")
+    print("x must be a inla object with config=TRUE")
   }
 }
