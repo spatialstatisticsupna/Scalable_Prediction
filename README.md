@@ -27,7 +27,7 @@ Use the following command to read the dataset:
 
 ```r 
 library(bigDM)
-data("Data_LungCancer"")
+data("Data_LungCancer")
 ```
 
 # R code
