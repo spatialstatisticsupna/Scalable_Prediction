@@ -44,10 +44,11 @@ Use the following commands to load the data
 
 This section includes the R scripts to fit with [R-INLA](https://www.r-inla.org/) the spatio-temporal projection models described in the present paper.
 
-- [**Fit_model_projection.R**](https://github.com/spatialstatisticsupna/Scalable_Prediction/blob/master/R/Fit_model_projection.R)
+- [**Fit_model_projection.R**](https://github.com/spatialstatisticsupna/Scalable_Prediction/blob/main/R/Fit_model_projection.R)
 
   R code to fit the *classical* and *partition* models described in Orozco-Acosta et al. (2023) using the [bigDM](https://github.com/spatialstatisticsupna/bigDM) package.
 
+<!---
 - [cv_measures.R](https://github.com/spatialstatisticsupna/Scalable_Prediction/blob/main/R/cv_measures.R) is a R function to compute the cross validation measures implemented in [Liu, Z., & Rue, H. (2022)](https://arxiv.org/pdf/2210.04482.pdf) called Leave-One-Out Cross-Validation (LOOCV) and Leave-Group-Out Cross-Validation (LGOCV) for latent Gaussian models. For example:
 
 ```r
@@ -74,7 +75,7 @@ This section includes the R scripts to fit with [R-INLA](https://www.r-inla.org/
   cvmeasures <- CV(model)
                            
 ```
-
+--->
 
 # Acknowledgements
 
@@ -84,8 +85,8 @@ This research has been supported by the project PID2020-113125RBI00/MCIN/AEI/10.
 
 # References
 
-Liu, Z., & Rue, H. (2022). Leave-Group-Out Cross-Validation For Latent Gaussian Models. _arXiv preprint arXiv:2210.04482_. [https://doi.org/10.48550/arXiv.2210.04482](https://doi.org/10.48550/arXiv.2210.04482)
+<!--- Liu, Z., & Rue, H. (2022). Leave-Group-Out Cross-Validation For Latent Gaussian Models. _arXiv preprint arXiv:2210.04482_. [https://doi.org/10.48550/arXiv.2210.04482](https://doi.org/10.48550/arXiv.2210.04482) --->
 
 Orozco-Acosta, E., Riebler, A., Adin, A., and Ugarte, M.D. (2023). A scalable methodology for forecasting short-term high spatial resolution cancer mortality data. _preprint_.
 
-Van Niekerk, J., Krainski, E., Rustand, D., & Rue, H. (2023). A new avenue for Bayesian inference with INLA. _Computational Statistics & Data Analysis_, 107692. [https://doi.org/10.1016/j.csda.2023.107692](https://doi.org/10.1016/j.csda.2023.107692)
+<!--- Van Niekerk, J., Krainski, E., Rustand, D., & Rue, H. (2023). A new avenue for Bayesian inference with INLA. _Computational Statistics & Data Analysis_, 107692. [https://doi.org/10.1016/j.csda.2023.107692](https://doi.org/10.1016/j.csda.2023.107692) --->
