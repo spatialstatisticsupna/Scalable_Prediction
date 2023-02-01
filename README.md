@@ -1,6 +1,6 @@
 # A scalable methodology for forecasting short-term high spatial resolution cancer mortality data
 
-This repository contains the R code to fit the models described in the paper entitled _"A scalable methodology for forecasting short-term high-spatial resolution cancer mortality data"_ (Orozco-Acosta et al., 2023).
+This repository contains the R code to fit the models described in the paper entitled _"A scalable methodology for forecasting short-term high spatial resolution cancer mortality data"_ (Orozco-Acosta et al., 2023).
 
 All the computations are made using the R package [**bigDM**](https://cran.r-project.org/web/packages/bigDM/index.html), which also includes several univariate and multivariate spatial and spatio-temporal Bayesian models for high-dimensional areal count data based on the integrated nested Laplace approximation (INLA) estimation technique. Visit [https://github.com/spatialstatisticsupna/bigDM](https://github.com/spatialstatisticsupna/bigDM) for details about installation and access to the vignettes accompanying this package.
 
@@ -86,6 +86,6 @@ This research has been supported by the project PID2020-113125RBI00/MCIN/AEI/10.
 
 Liu, Z., & Rue, H. (2022). Leave-Group-Out Cross-Validation For Latent Gaussian Models. _arXiv preprint arXiv:2210.04482_. [https://doi.org/10.48550/arXiv.2210.04482](https://doi.org/10.48550/arXiv.2210.04482)
 
-Orozco-Acosta, E., Riebler, A., Adin, A., and Ugarte, M.D. (2023). A scalable methodology for forecasting short-term high-spatial resolution cancer mortality data. _preprint_.
+Orozco-Acosta, E., Riebler, A., Adin, A., and Ugarte, M.D. (2023). A scalable methodology for forecasting short-term high spatial resolution cancer mortality data. _preprint_.
 
 Van Niekerk, J., Krainski, E., Rustand, D., & Rue, H. (2023). A new avenue for Bayesian inference with INLA. _Computational Statistics & Data Analysis_, 107692. [https://doi.org/10.1016/j.csda.2023.107692](https://doi.org/10.1016/j.csda.2023.107692)
