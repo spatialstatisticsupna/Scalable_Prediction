@@ -1,33 +1,41 @@
-# A scalable methodology for forecasting short-term high-spatial resolution cancer mortality data
+# A scalable methodology for forecasting short-term high spatial resolution cancer mortality data
 
 This repository contains the R code to fit the models described in the paper entitled _"A scalable methodology for forecasting short-term high-spatial resolution cancer mortality data"_ (Orozco-Acosta et al., 2023).
 
+All the computations are made using the R package [**bigDM**](https://cran.r-project.org/web/packages/bigDM/index.html), which also includes several univariate and multivariate spatial and spatio-temporal Bayesian models for high-dimensional areal count data based on the integrated nested Laplace approximation (INLA) estimation technique.
+
 ## Table of contents
 
-- [Data](#Data)
-
+- [Data](#Lung-cancer-mortality-data)
 - [R code](#R-code)
-
 - [References](#References)
 
-# Data
 
-Spanish lung cancer mortality data are used to replicate the analysis of real data in the 7907 municipalities of continental Spain during the period 1991-2015. Due to confidentiality issues with the data provider, simulated dataset is used. To analyse the data, you must have the `bigDM` package installed available [here](https://github.com/spatialstatisticsupna/bigDM).
+# Lung cancer mortality data
 
-The [Data_LungCancer](https://github.com/spatialstatisticsupna/bigDM/blob/master/data/Data_LungCancer.rda) file contains the following variables:
+We illustrate our proposed methodology by projecting lung cancer mortality data in the 7907 municipalities of continental Spain by considering 3-year ahead predictions usign the period 1991-2012 as reference.
 
+For that purpose we use the `Data_LungCancer` object available at the bigDM package, which contains simulated data of male lung cancer mortality counts (modified in order to preserve the confidentiality of the original data). Specifically, the data set contains the following variables:
 - ```ID```: character vector of geographic identifiers
 - ```year```: numeric vector of year’s identifiers
 - ```obs```: observed number of cases
 - ```exp```: expected number of cases
 - ```SMR```:  standardized mortality ratios
-- ```pob```: population at risk
+- ```pop```: population at risk
 
-Use the following command to read the dataset:
-
+Use the following commands to load the data
 ```r 
-library(bigDM)
-data("Data_LungCancer")
+> library(bigDM)
+> data("Data_LungCancer")
+
+> head(Data_LungCancer)
+     ID year obs        exp      SMR     pop
+1 01001 1991   0 0.27554975 0.000000  483.77
+2 01002 1991   3 2.72124997 1.102435 4948.98
+3 01003 1991   0 0.49612295 0.000000  667.91
+4 01004 1991   0 0.37040942 0.000000  591.11
+5 01006 1991   0 0.06999827 0.000000   62.81
+6 01008 1991   0 0.29240328 0.000000  354.80
 ```
 
 # R code
