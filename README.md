@@ -2,7 +2,8 @@
 
 This repository contains the R code to fit the models described in the paper entitled _"A scalable methodology for forecasting short-term high-spatial resolution cancer mortality data"_ (Orozco-Acosta et al., 2023).
 
-All the computations are made using the R package [**bigDM**](https://cran.r-project.org/web/packages/bigDM/index.html), which also includes several univariate and multivariate spatial and spatio-temporal Bayesian models for high-dimensional areal count data based on the integrated nested Laplace approximation (INLA) estimation technique.
+All the computations are made using the R package [**bigDM**](https://cran.r-project.org/web/packages/bigDM/index.html), which also includes several univariate and multivariate spatial and spatio-temporal Bayesian models for high-dimensional areal count data based on the integrated nested Laplace approximation (INLA) estimation technique. Visit [https://github.com/spatialstatisticsupna/bigDM](https://github.com/spatialstatisticsupna/bigDM) for details about installation and access to the vignettes accompanying this package.
+
 
 ## Table of contents
 
@@ -38,17 +39,14 @@ Use the following commands to load the data
 6 01008 1991   0 0.29240328 0.000000  354.80
 ```
 
+
 # R code
 
-R code to fit the spatio-temporal areal models described in the paper, and to reproduce the results, has been included [here](https://github.com/spatialstatisticsupna/Scalable_Prediction/tree/main/R).
+This section includes the R scripts to fit with [R-INLA](https://www.r-inla.org/) the spatio-temporal projection models described in the present paper.
 
-- [fit_model_projection.R](https://github.com/spatialstatisticsupna/Scalable_Prediction/blob/main/R/fit_model_projection.R) is a R script to fit (and recover submodels) the classics and partitioned (disjoint and 1st-order neighbourhood) models.
+- [**Fit_model_projection.R**](https://github.com/spatialstatisticsupna/Scalable_Prediction/blob/master/R/Fit_model_projection.R)
 
-  - Note: R_INLA version 22.12.16 by default use `"compact"` mode (`"experimental"` mode in previous versions) explained in [Van Niekerk, J. et. al. (2023)](https://www.sciencedirect.com/science/article/pii/S0167947323000038). With `inla.mode` argument of `STCAR_INLA()` function it can be set. For example:
-  
-  ``` r
-  STCAR_INLA(..., inla.mode = "compact")
-  ```
+  R code to fit the *classical* and *partition* models described in Orozco-Acosta et al. (2023) using the [bigDM](https://github.com/spatialstatisticsupna/bigDM) package.
 
 - [cv_measures.R](https://github.com/spatialstatisticsupna/Scalable_Prediction/blob/main/R/cv_measures.R) is a R function to compute the cross validation measures implemented in [Liu, Z., & Rue, H. (2022)](https://arxiv.org/pdf/2210.04482.pdf) called Leave-One-Out Cross-Validation (LOOCV) and Leave-Group-Out Cross-Validation (LGOCV) for latent Gaussian models. For example:
 
