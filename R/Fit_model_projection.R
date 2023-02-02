@@ -72,7 +72,7 @@ k0_typeIV <- STCAR_INLA(carto=Carto_SpainMUN, data=data, ID.group="ID.prov",
 
 ## 1st-order neighbourhood models 
 ##################################
-workers <- future::availableWorkers()-1
+workers <- future::availableWorkers()[-1]
 
 k1_typeI <- STCAR_INLA(carto=Carto_SpainMUN, data=data, ID.group="ID.prov",
                        ID.area="ID", ID.year="year", O="obs", E="pop",
