@@ -17,7 +17,7 @@ carto.prov <- aggregate(Carto_SpainMUN[,"geometry"], list(ID.group=Carto_SpainMU
 
 
 #####################################################################################################
-## Load the final model (1st-order neighbourhood + Type IV interaction) fitted using bigDM,        ##
+## Load the final model (1st-order neighbourhood + Type IV interaction) fitted using INLA,         ##
 ## which can be downloaded from: https://emi-sstcdapp.unavarra.es/bigDM/k1_typeIV_simulated.Rdata  ##
 #####################################################################################################
 load("k1_typeIV_simulated.Rdata")

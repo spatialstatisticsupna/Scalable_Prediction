@@ -49,25 +49,25 @@ k0_typeI <- STCAR_INLA(carto=Carto_SpainMUN, data=data, ID.group="ID.prov",
                        ID.area="ID", ID.year="year", O="obs", E="pop",
                        spatial="BYM2", temporal="rw1", interaction="TypeI",
                        model="partition", k=0, strategy="gaussian",
-                       plan="cluster", workers=workers, inla.mode="compact")
+                       plan="cluster", workers=workers)
 
 k0_typeII <- STCAR_INLA(carto=Carto_SpainMUN, data=data, ID.group="ID.prov",
                         ID.area="ID", ID.year="year", O="obs", E="pop",
                         spatial="BYM2", temporal="rw1", interaction="TypeII",
                         model="partition", k=0, strategy="gaussian",
-                        plan="cluster", workers=workers, inla.mode="compact")
+                        plan="cluster", workers=workers)
 
 k0_typeIII <- STCAR_INLA(carto=Carto_SpainMUN, data=data, ID.group="ID.prov",
                          ID.area="ID", ID.year="year", O="obs", E="pop",
                          spatial="BYM2", temporal="rw1", interaction="TypeIII",
                          model="partition", k=0, strategy="gaussian",
-                         plan="cluster", workers=workers, inla.mode="compact")
+                         plan="cluster", workers=workers)
 
 k0_typeIV <- STCAR_INLA(carto=Carto_SpainMUN, data=data, ID.group="ID.prov",
                          ID.area="ID", ID.year="year", O="obs", E="pop",
                          spatial="BYM2", temporal="rw1", interaction="TypeIV",
                          model="partition", k=0, strategy="gaussian",
-                         plan="cluster", workers=workers, inla.mode="compact")
+                         plan="cluster", workers=workers)
 
 
 ## 1st-order neighbourhood models 
@@ -78,22 +78,22 @@ k1_typeI <- STCAR_INLA(carto=Carto_SpainMUN, data=data, ID.group="ID.prov",
                        ID.area="ID", ID.year="year", O="obs", E="pop",
                        spatial="BYM2", temporal="rw1", interaction="TypeI",
                        model="partition", k=1, strategy="gaussian",
-                       plan="cluster", workers=workers, inla.mode="compact")
+                       plan="cluster", workers=workers)
 
 k1_typeII <- STCAR_INLA(carto=Carto_SpainMUN, data=data, ID.group="ID.prov",
                         ID.area="ID", ID.year="year", O="obs", E="pop",
                         spatial="BYM2", temporal="rw1", interaction="TypeII",
                         model="partition", k=1, strategy="gaussian",
-                        plan="cluster", workers=workers, inla.mode="compact")
+                        plan="cluster", workers=workers)
 
 k1_typeIII <- STCAR_INLA(carto=Carto_SpainMUN, data=data, ID.group="ID.prov",
                          ID.area="ID", ID.year="year", O="obs", E="pop",
                          spatial="BYM2", temporal="rw1", interaction="TypeIII",
                          model="partition", k=1, strategy="gaussian",
-                         plan="cluster", workers=workers, inla.mode="compact")
+                         plan="cluster", workers=workers)
 
 k1_typeIV <- STCAR_INLA(carto=Carto_SpainMUN, data=data, ID.group="ID.prov",
                         ID.area="ID", ID.year="year", O="obs", E="pop",
                         spatial="BYM2", temporal="rw1", interaction="TypeIV",
                         model="partition", k=1, strategy="gaussian",
-                        plan="cluster", workers=workers, inla.mode="compact")
+                        plan="cluster", workers=workers)
