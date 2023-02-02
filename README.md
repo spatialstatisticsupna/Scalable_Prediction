@@ -1,6 +1,6 @@
-# A scalable methodology for forecasting short-term high spatial resolution cancer mortality data
+# A scalable methodology for forecasting short-term high spatial resolution areal count data
 
-This repository contains the R code to fit the models described in the paper entitled _"A scalable methodology for forecasting short-term high spatial resolution cancer mortality data"_ (Orozco-Acosta et al., 2023).
+This repository contains the R code to fit the models described in the paper entitled _"A scalable methodology for forecasting short-term high spatial resolution areal count data"_ (Orozco-Acosta et al., 2023).
 
 All the computations are made using the R package [**bigDM**](https://cran.r-project.org/web/packages/bigDM/index.html), which also includes several univariate and multivariate spatial and spatio-temporal Bayesian models for high-dimensional areal count data based on the integrated nested Laplace approximation (INLA) estimation technique. Visit [https://github.com/spatialstatisticsupna/bigDM](https://github.com/spatialstatisticsupna/bigDM) for details about installation and access to the vignettes accompanying this package.
 
@@ -48,45 +48,26 @@ This section includes the R scripts to fit with [R-INLA](https://www.r-inla.org/
 
   R code to fit the *classical* and *partition* models described in Orozco-Acosta et al. (2023) using the [bigDM](https://github.com/spatialstatisticsupna/bigDM) package.
 
-<!---
-- [cv_measures.R](https://github.com/spatialstatisticsupna/Scalable_Prediction/blob/main/R/cv_measures.R) is a R function to compute the cross validation measures implemented in [Liu, Z., & Rue, H. (2022)](https://arxiv.org/pdf/2210.04482.pdf) called Leave-One-Out Cross-Validation (LOOCV) and Leave-Group-Out Cross-Validation (LGOCV) for latent Gaussian models. For example:
+- [**Figures_and_Tables.R**](https://github.com/spatialstatisticsupna/Scalable_Prediction/blob/main/R/Figures_and_Tables.R)
 
-```r
-  ## loading packages ##
-  library(bigDM)
-  library(INLA)
+  R code that contains the necessary functions to replicate most of the figures and tables of the present paper. Note that slightly different results are obtained since we are using simulated counts to preserve the confidentiality of the original data. The final model (1st-order neighbourhood + Type IV interaction) fitted using INLA can be downloaded from [https://emi-sstcdapp.unavarra.es/bigDM/k1_typeIV_simulated.Rdata](https://emi-sstcdapp.unavarra.es/bigDM/k1_typeIV_simulated.Rdata).
+
+- [**CV_measures.R**](https://github.com/spatialstatisticsupna/Scalable_Prediction/blob/main/R/CV_measures.R)
+
+  R code to compute the logarithmic score (sum of the log-predictive densities computed over each area-time point) using both leave-one-out cross-validation (LOOCV) and leave-group-out cross validation (LGOCV) techniques. See [Liu, Z., and Rue, H. (2022)](https://arxiv.org/pdf/2210.04482.pdf) for further details. 
   
-  ## data preparation ##
-  Carto_SpainMUN$ID.prov <- substr(Carto_SpainMUN$ID, 1, 2)
-  carto <- Carto_SpainMUN[Carto_SpainMUN$ID.prov == "01", ] # 01 Álava
-  data <- Data_LungCancer
-  data <- data[substr(data$ID, 1, 2) %in% "01", ]
-  
-  # NA values for predict ##
-  data$obs[data$year %in% 2013:2015] <- NA
-  
-  ## fit INLA model ##
-  model <- STCAR_INLA(carto = carto, data = data, ID.area = "ID", ID.year = "year", 
-                      O = "obs", E = "pop", spatial = "BYM2", temporal = "rw1", 
-                      interaction = "TypeI", model = "global", inla.mode = "compact")
-  
-  ## compute cross validation measures ##
-  source("R/cv_measures.R")
-  cvmeasures <- CV(model)
-                           
-```
---->
+  **Note**: In order to compute these measures, the `inla.mode="compact"` argument must be set in the call to the `STCAR_INLA()` function (see the [reference manual](https://cran.r-project.org/web/packages/bigDM/bigDM.pdf) for details).
+
 
 # Acknowledgements
 
-This research has been supported by the project PID2020-113125RBI00/MCIN/AEI/10.13039/501100011033. It has also been partially funded by the Public University of Navarre (project PJUPNA20001).
+This research has been supported by the project PID2020-113125RBI00/MCIN/AEI/10.13039/501100011033. It has also been partially funded by the Public University of Navarre (project PJUPNA2001).
 
 ![image](https://github.com/spatialstatisticsupna/Scalable_Prediction/blob/main/micin-aei.jpg)
 
+
 # References
 
-<!--- Liu, Z., & Rue, H. (2022). Leave-Group-Out Cross-Validation For Latent Gaussian Models. _arXiv preprint arXiv:2210.04482_. [https://doi.org/10.48550/arXiv.2210.04482](https://doi.org/10.48550/arXiv.2210.04482) --->
+[Liu, Z., and Rue, H. (2022). Leave-Group-Out Cross-Validation For Latent Gaussian Models. _arXiv preprint_.](https://doi.org/10.48550/arXiv.2210.04482)
 
-Orozco-Acosta, E., Riebler, A., Adin, A., and Ugarte, M.D. (2023). A scalable methodology for forecasting short-term high spatial resolution cancer mortality data. _preprint_.
-
-<!--- Van Niekerk, J., Krainski, E., Rustand, D., & Rue, H. (2023). A new avenue for Bayesian inference with INLA. _Computational Statistics & Data Analysis_, 107692. [https://doi.org/10.1016/j.csda.2023.107692](https://doi.org/10.1016/j.csda.2023.107692) --->
+Orozco-Acosta, E., Riebler, A., Adin, A., and Ugarte, M.D. (2023). A scalable methodology for forecasting short-term high spatial resolution areal count data.
