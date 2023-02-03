@@ -54,7 +54,7 @@ This section includes the R scripts to fit with [R-INLA](https://www.r-inla.org/
 
 - [**CV_measures.R**](https://github.com/spatialstatisticsupna/Scalable_Prediction/blob/main/R/CV_measures.R)
 
-  R code to compute the logarithmic score (sum of the log-predictive densities computed over each area-time point) using both leave-one-out cross-validation (LOOCV) and leave-group-out cross validation (LGOCV) techniques. See [Liu, Z., and Rue, H. (2022)](https://arxiv.org/pdf/2210.04482.pdf) for further details. 
+  R code to compute the logarithmic score (sum of the log-predictive densities computed over each area-time point) using both leave-one-out cross-validation (LOOCV) and leave-group-out cross validation (LGOCV) techniques in a small example. See [Liu, Z., and Rue, H. (2022)](https://arxiv.org/pdf/2210.04482.pdf) for further details. 
   
   **Note**: In order to compute these measures, the `inla.mode="compact"` argument must be set in the call to the `STCAR_INLA()` function (see the [reference manual](https://cran.r-project.org/web/packages/bigDM/bigDM.pdf) for details).
 
