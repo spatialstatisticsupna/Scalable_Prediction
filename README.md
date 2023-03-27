@@ -1,8 +1,10 @@
-# A scalable methodology for forecasting short-term high spatial resolution areal count data
+# A scalable approach for short-term forecasting in high spatial resolution areal data
 
-This repository contains the R code to fit the models described in the paper entitled _"A scalable methodology for forecasting short-term high spatial resolution areal count data"_ (Orozco-Acosta et al., 2023).
+This repository contains the R code to fit the models described in the paper entitled _"A scalable approach for short-term forecasting in high spatial resolution areal data"_ (Orozco-Acosta et al., 2023).
 
-All the computations are made using the R package [**bigDM**](https://cran.r-project.org/web/packages/bigDM/index.html), which also includes several univariate and multivariate spatial and spatio-temporal Bayesian models for high-dimensional areal count data based on the integrated nested Laplace approximation (INLA) estimation technique. Visit [https://github.com/spatialstatisticsupna/bigDM](https://github.com/spatialstatisticsupna/bigDM) for details about installation and access to the vignettes accompanying this package.
+All the computations are made using the R package [**bigDM**](https://cran.r-project.org/web/packages/bigDM/index.html) (version 0.5.1), which also includes several univariate and multivariate spatial and spatio-temporal Bayesian models for high-dimensional areal count data based on the integrated nested Laplace approximation (INLA) estimation technique.
+
+See [https://github.com/spatialstatisticsupna/bigDM](https://github.com/spatialstatisticsupna/bigDM) for details about installation and access to the vignettes accompanying this package.
 
 
 ## Table of contents
@@ -14,9 +16,11 @@ All the computations are made using the R package [**bigDM**](https://cran.r-pro
 
 # Lung cancer mortality data
 
-We illustrate our proposed methodology by projecting lung cancer mortality data in the 7907 municipalities of continental Spain by considering 3-year ahead predictions usign the period 1991-2012 as reference.
+We illustrate our proposed methodology by projecting lung cancer mortality data in the 7907 municipalities of continental Spain by considering 3-year ahead predictions using the period 1991-2012 as reference.
 
-For that purpose we use the `Data_LungCancer` object available at the bigDM package, which contains simulated data of male lung cancer mortality counts (modified in order to preserve the confidentiality of the original data). Specifically, the data set contains the following variables:
+For that purpose we use the `Data_LungCancer` object available at the bigDM package, which contains simulated data of male lung cancer mortality counts (modified in order to preserve the confidentiality of the original data).
+
+Specifically, the data set contains the following variables:
 - ```ID```: character vector of geographic identifiers
 - ```year```: numeric vector of year’s identifiers
 - ```obs```: observed number of cases
@@ -56,8 +60,6 @@ This section includes the R scripts to fit with [R-INLA](https://www.r-inla.org/
 
   R code to compute the logarithmic score (sum of the log-predictive densities computed over each area-time point) using both leave-one-out cross-validation (LOOCV) and leave-group-out cross validation (LGOCV) techniques in a small example. See [Liu, Z., and Rue, H. (2022)](https://arxiv.org/pdf/2210.04482.pdf) for further details. 
   
-  **Note**: In order to compute these measures, the `inla.mode="compact"` argument must be set in the call to the `STCAR_INLA()` function (see the [reference manual](https://cran.r-project.org/web/packages/bigDM/bigDM.pdf) for details).
-
 
 # Acknowledgements
 
@@ -70,4 +72,4 @@ This research has been supported by the project PID2020-113125RBI00/MCIN/AEI/10.
 
 [Liu, Z., and Rue, H. (2022). Leave-Group-Out Cross-Validation For Latent Gaussian Models. _arXiv preprint_.](https://doi.org/10.48550/arXiv.2210.04482)
 
-Orozco-Acosta, E., Riebler, A., Adin, A., and Ugarte, M.D. (2023). A scalable methodology for forecasting short-term high spatial resolution areal count data.
+Orozco-Acosta, E., Riebler, A., Adin, A., and Ugarte, M.D. (2023). A scalable approach for short-term forecasting in high spatial resolution areal data. _arXiv preprint_.

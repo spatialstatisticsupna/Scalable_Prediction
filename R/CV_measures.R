@@ -35,7 +35,7 @@ data$obs[data$year %in% 2013:2015] <- NA
 Model <- STCAR_INLA(carto=carto, data=data,
                     ID.area="ID", ID.year="year", O="obs", E="pop",
                     spatial="BYM2", temporal="rw1", interaction="TypeIV",
-                    model="global", inla.mode = "compact")
+                    model="global",  strategy="gaussian")
 summary(Model)
 
 

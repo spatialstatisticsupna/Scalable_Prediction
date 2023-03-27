@@ -15,6 +15,11 @@ head(Carto_SpainMUN)
 Carto_SpainMUN$prov <- substr(Carto_SpainMUN$ID,1,2)
 carto.prov <- aggregate(Carto_SpainMUN[,"geometry"], list(ID.group=Carto_SpainMUN$prov), head)
 
+S <- 7907
+T <- 25
+t.from <- 1991
+t.to <- 2015
+
 
 #####################################################################################################
 ## Load the final model (1st-order neighbourhood + Type IV interaction) fitted using INLA,         ##
@@ -72,9 +77,9 @@ quant0975 <- quant0975[loc.capital,]
 
 IC95_2013 <- paste("(",round(quant0025[,1],1),",",round(quant0975[,1],1),")",sep = "")
 IC95_2015 <- paste("(",round(quant0025[,3],1),",",round(quant0975[,3],1),")",sep = "")
-tab <- data.frame(Obs2013 = quant0500[,1], 
+tab <- data.frame(Obs2013 = round(quant0500[,1],1),
                   IC95_2013=IC95_2013, 
-                  Obs2015 = quant0500[,3], 
+                  Obs2015 = round(quant0500[,3],1),
                   IC95_2015=IC95_2015)
 rownames(tab) <- names.capital
 tab <- tab[order(tab$Obs2013),]
@@ -82,7 +87,7 @@ print(tab)
 
 
 ###################################################################################
-## Figure 3: Posterior median estimates of estimated lung cancer mortality rates ##
+## Figure 2: Posterior median estimates of estimated lung cancer mortality rates ##
 ##           per 100000 males for the 7907 municipalities of continental during  ##
 ##           the period 1991-2015. The years 2013 to 2015 were predicted.        ##
 ####################################################################################
@@ -108,22 +113,22 @@ Map.Rates <- tm_shape(carto) +
   tm_facets(nrow=2, ncol=3)
 
 tmap_mode("plot")
-tmap_save(Map.Rates, file="Figure3.pdf")
+tmap_save(Map.Rates, file="Figure2.pdf")
 
 
 ##################################################################################################
-## Figure 4: Posterior predictive median and its corresponding 95% CI of lung cancer (top) and  ##
+## Figure 3: Posterior predictive median and its corresponding 95% CI of lung cancer (top) and  ##
 ##           overall cancer (bottom) deaths during the period 1991-2015 for the municipalities  ##
-##           of Guadalajara, Madrid and Bilbao. Crude rates are shown as a filled circle.       ##
+##           of Gerona, Madrid and Bilbao. Crude rates are shown as a filled circle.            ##
 ##           The vertical dotted line indicates where the prediction starts.                    ##
 ##################################################################################################
-obs.real <- matrix(data$O, ncol=T, nrow=S)
+obs.real <- matrix(Data_LungCancer$obs, ncol=T, nrow=S)
 
 small.area <- c("17079","28079","48020")
 name.area <- c("Gerona","Madrid","Bilbao")
 
 graphics.off()
-pdf(file="Figure4.pdf", width=7.5, height=2.5)
+pdf(file="Figure3.pdf", width=7.5, height=2.5)
 
 par(mfrow=c(1,3))
 par(mar=c(2,2,1,0.2))
@@ -163,10 +168,3 @@ for(s in 1:3){
   legend("topleft", inset=0.01, legend=c("","","","",""), fill=c(NA,NA,"gray70"), cex=0.9, box.lty=0, bty="n",border = NA)
 }
 dev.off()
-
-
-##############################################################################################
-## Figure 5: Posterior median of the percentage change of mortality rates from 2013 to 2015 ##
-##############################################################################################
-
-## PENDIENTE ##
