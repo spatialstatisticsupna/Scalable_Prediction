@@ -2,7 +2,8 @@
 
 This repository contains the R code to fit the models described in the paper entitled _"A scalable approach for short-term forecasting in high spatial resolution areal data"_ (Orozco-Acosta et al., 2023).
 
-All the computations are made using the R package [**bigDM**](https://cran.r-project.org/web/packages/bigDM/index.html) version 0.5.1, which was released in CRAN on 2023-02-23 adapting the `STCAR_INLA()` function to make it compatible for short-term forecasting. The package also includes several univariate and multivariate spatial and spatio-temporal Bayesian models for high-dimensional areal count data based on the integrated nested Laplace approximation (INLA) estimation technique.
+All computations were performed using version 0.5.1 of the R package [**bigDM**](https://cran.r-project.org/web/packages/bigDM/index.html), which was released on CRAN on February 23, 2023. This version includes adaptations to the `STCAR_INLA()`  function, making it compatible for short-term forecasting.
+The package also includes several univariate and multivariate spatial and spatio-temporal Bayesian models for high-dimensional areal count data based on the integrated nested Laplace approximation (INLA) estimation technique.
 
 See [https://github.com/spatialstatisticsupna/bigDM](https://github.com/spatialstatisticsupna/bigDM) for details about installation and access to the vignettes accompanying this package.
 
