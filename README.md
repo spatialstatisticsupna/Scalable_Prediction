@@ -63,7 +63,7 @@ This section includes the R scripts to fit with [R-INLA](https://www.r-inla.org/
 
 # Acknowledgements
 
-This research has been supported by the project PID2020-113125RBI00/MCIN/AEI/10.13039/501100011033. It has also been partially funded by the Public University of Navarre (project PJUPNA2001).
+This research has been supported by the project PID2020-113125RBI00/MCIN/AEI/10.13039/501100011033.
 
 ![image](https://github.com/spatialstatisticsupna/Scalable_Prediction/blob/main/micin-aei.jpg)
 
