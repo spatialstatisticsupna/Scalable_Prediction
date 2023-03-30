@@ -1,6 +1,6 @@
 # A scalable approach for short-term forecasting in high spatial resolution areal data
 
-This repository contains the R code to fit the models described in the paper entitled _"A scalable approach for short-term forecasting in high spatial resolution areal data"_ (Orozco-Acosta et al., 2023).
+This repository contains the R code to fit the models described in the paper entitled _"A scalable approach for short-term forecasting in high spatial resolution areal data"_ [(Orozco-Acosta et al., 2023)](https://arxiv.org/abs/2303.16549).
 
 All computations were performed using version 0.5.1 of the R package [**bigDM**](https://cran.r-project.org/web/packages/bigDM/index.html), which was released on CRAN on February 23, 2023. This version includes adaptations to the `STCAR_INLA()`  function, making it compatible for short-term forecasting.
 The package also includes several univariate and multivariate spatial and spatio-temporal Bayesian models for high-dimensional areal count data based on the integrated nested Laplace approximation (INLA) estimation technique.
@@ -73,4 +73,4 @@ This research has been supported by the project PID2020-113125RBI00/MCIN/AEI/10.
 
 [Liu, Z., and Rue, H. (2022). Leave-Group-Out Cross-Validation For Latent Gaussian Models. _arXiv preprint_.](https://doi.org/10.48550/arXiv.2210.04482)
 
-Orozco-Acosta, E., Riebler, A., Adin, A., and Ugarte, M.D. (2023). A scalable approach for short-term forecasting in high spatial resolution areal data. _arXiv preprint_.
+[Orozco-Acosta, E., Riebler, A., Adin, A., and Ugarte, M.D. (2023). A scalable approach for short-term forecasting in high spatial resolution areal data. _arXiv preprint_.](https://arxiv.org/abs/2303.16549)
