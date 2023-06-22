@@ -1,6 +1,6 @@
-# A scalable approach for short-term forecasting in high spatial resolution areal data
+# A scalable approach for short-term disease forecasting in high spatial resolution areal data
 
-This repository contains the R code to fit the models described in the paper entitled _"A scalable approach for short-term forecasting in high spatial resolution areal data"_ [(Orozco-Acosta et al., 2023)](https://arxiv.org/abs/2303.16549).
+This repository contains the R code to fit the models described in the paper entitled _"A scalable approach for short-term disease forecasting in high spatial resolution areal data"_ [(Orozco-Acosta et al., 2023)](https://arxiv.org/abs/2303.16549), as well as to reproduce similar figures and tables to the ones presented in the paper. Note that due to confidentiality issues with the real data, a simulated dataset has been used and then, results are not fully reproducible.
 
 All computations were performed using version 0.5.1 of the R package [**bigDM**](https://cran.r-project.org/web/packages/bigDM/index.html), which was released on CRAN on February 23, 2023. This version includes adaptations to the `STCAR_INLA()`  function, making it compatible for short-term forecasting.
 The package also includes several univariate and multivariate spatial and spatio-temporal Bayesian models for high-dimensional areal count data based on the integrated nested Laplace approximation (INLA) estimation technique.
@@ -15,18 +15,16 @@ See [https://github.com/spatialstatisticsupna/bigDM](https://github.com/spatials
 - [References](#References)
 
 
-# Lung cancer mortality data
+# Cancer mortality data
 
-We illustrate our proposed methodology by projecting lung cancer mortality data in the 7907 municipalities of continental Spain by considering 3-year ahead predictions using the period 1991-2012 as reference.
+The proposed methodology is applied to project male lung cancer and overall cancer (all cites) mortality data in the 7907 municipalities of continental Spain by considering three-year ahead predictions using the period 1991-2012 as reference.
 
-For that purpose we use the `Data_LungCancer` object available at the bigDM package, which contains simulated data of male lung cancer mortality counts (modified in order to preserve the confidentiality of the original data).
-
-Specifically, the data set contains the following variables:
+The `Data_LungCancer` object available at the **bigDM** package, contains simulated data of male lung cancer mortality counts (modified in order to preserve the confidentiality of the original data). Specifically, the data set contains the following variables:
 - ```ID```: character vector of geographic identifiers
-- ```year```: numeric vector of year’s identifiers
+- ```year```: numeric vector of years identifiers
 - ```obs```: observed number of cases
 - ```exp```: expected number of cases
-- ```SMR```:  standardized mortality ratios
+- ```SMR```: standardized mortality ratios
 - ```pop```: population at risk
 
 Use the following commands to load the data
@@ -44,23 +42,26 @@ Use the following commands to load the data
 6 01008 1991   0 0.29240328 0.000000  354.80
 ```
 
+Similarly, an Rdata containing simulated data of male overall cancer mortality counts can be loaded as:
+```r 
+> load(url("https://emi-sstcdapp.unavarra.es/bigDM/inst/Rdata/Data_OverallCancer.Rdata"))
+
+> head(Data_OverallCancer)
+     ID year obs       exp       SMR        pop
+1 01001 1991   1 1.0125164 0.9876384  483.77402
+2 01002 1991  10 9.8199947 1.0183305 4948.98255
+3 01003 1991   1 1.8756597 0.5331458  667.90829
+4 01004 1991   1 1.4252320 0.7016401  591.11323
+5 01006 1991   0 0.2518388 0.0000000   62.81084
+6 01008 1991   2 1.0323942 1.9372445  354.79780
+```
+
 
 # R code
 
-This section includes the R scripts to fit with [R-INLA](https://www.r-inla.org/) the spatio-temporal projection models described in the present paper.
+R code to fit the models and reproduce similar figures and tables to the ones presented in the paper is included [here](https://github.com/spatialstatisticsupna/Scalable_Prediction/blob/master/R/)
 
-- [**Fit_model_projection.R**](https://github.com/spatialstatisticsupna/Scalable_Prediction/blob/main/R/Fit_model_projection.R)
 
-  R code to fit the *classical* and *partition* models described in Orozco-Acosta et al. (2023) using the [bigDM](https://github.com/spatialstatisticsupna/bigDM) package.
-
-- [**Figures_and_Tables.R**](https://github.com/spatialstatisticsupna/Scalable_Prediction/blob/main/R/Figures_and_Tables.R)
-
-  R code that contains the necessary functions to replicate most of the figures and tables of the present paper. Note that slightly different results are obtained since we are using simulated counts to preserve the confidentiality of the original data. The final model (1st-order neighbourhood + Type IV interaction) fitted using INLA can be downloaded from [https://emi-sstcdapp.unavarra.es/bigDM/k1_typeIV_simulated.Rdata](https://emi-sstcdapp.unavarra.es/bigDM/k1_typeIV_simulated.Rdata).
-
-- [**CV_measures.R**](https://github.com/spatialstatisticsupna/Scalable_Prediction/blob/main/R/CV_measures.R)
-
-  R code to compute the logarithmic score (sum of the log-predictive densities computed over each area-time point) using both leave-one-out cross-validation (LOOCV) and leave-group-out cross validation (LGOCV) techniques in a small example. See [Liu, Z., and Rue, H. (2022)](https://arxiv.org/pdf/2210.04482.pdf) for further details. 
-  
 
 # Acknowledgements
 
@@ -73,4 +74,4 @@ This research has been supported by the project PID2020-113125RBI00/MCIN/AEI/10.
 
 [Liu, Z., and Rue, H. (2022). Leave-Group-Out Cross-Validation For Latent Gaussian Models. _arXiv preprint_.](https://doi.org/10.48550/arXiv.2210.04482)
 
-[Orozco-Acosta, E., Riebler, A., Adin, A., and Ugarte, M.D. (2023). A scalable approach for short-term forecasting in high spatial resolution areal data. _arXiv preprint_.](https://arxiv.org/abs/2303.16549)
+[Orozco-Acosta, E., Riebler, A., Adin, A., and Ugarte, M.D. (2023). A scalable approach for short-term disease forecasting in high spatial resolution areal data. _arXiv preprint_.](https://arxiv.org/abs/2303.16549)
