@@ -10,10 +10,9 @@ See [https://github.com/spatialstatisticsupna/bigDM](https://github.com/spatials
 
 ## Table of contents
 
-
 - [R code](#R-code)
-- [References](#References)
 - [Acknowledgements](#Acknowledgements)
+- [References](#References)
 
 
 # R code

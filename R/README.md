@@ -9,6 +9,14 @@ See [https://github.com/spatialstatisticsupna/bigDM](https://github.com/spatials
 The code of this paper is organized in self-contained folders, which are named according to the corresponding sections of the paper.
 
 
+## Table of contents
+
+- [Data](#Lung-cancer-mortality-data)
+- [Section 4. Predictive validation study](#Section-4.-Predictive-validation-study)
+- [Section 5. Illustration: projections of cancer mortality in Spain](#Section-5.-Illustration:-projections-of-cancer-mortality-in-Spain-study)
+- [Version info](#Version-info)
+
+
 ## Cancer mortality data
 
 The proposed methodology is applied to project male lung cancer and overall cancer (all cites) mortality data in the 7907 municipalities of continental Spain by considering three-year ahead predictions using the period 1991-2012 as reference.
@@ -51,13 +59,13 @@ Similarly, an Rdata containing simulated data of male overall cancer mortality c
 ```
 
 
-### [**Section 4. Predictive validation study**](https://github.com/spatialstatisticsupna/Scable_Prediction/tree/main/R/Section4_PredictiveValidationStudy")
+## [Section 4. Predictive validation study](https://github.com/spatialstatisticsupna/Scable_Prediction/tree/main/R/Section4_PredictiveValidationStudy)
 
 
-### [**Section 5. Illustration: projections of cancer mortality in Spain study**](https://github.com/spatialstatisticsupna/Scable_Prediction/tree/main/R/Section5_Illustration")
+## [Section 5. Illustration: projections of cancer mortality in Spain](https://github.com/spatialstatisticsupna/Scable_Prediction/tree/main/R/Section5_Illustration)
 
 
-## R and R packages. Version info
+## Version info
 
 ``` {.r}
 R version 4.2.1 (2022-06-23 ucrt)
