@@ -11,7 +11,7 @@ The code of this paper is organized in self-contained folders, which are named a
 
 ## Table of contents
 
-- [Data](#Lung-cancer-mortality-data)
+- [Cancer mortality data](#Cancer-mortality-data)
 - [Section 4. Predictive validation study](#Section-4.-Predictive-validation-study)
 - [Section 5. Illustration: projections of cancer mortality in Spain](#Section-5.-Illustration:-projections-of-cancer-mortality-in-Spain-study)
 - [Version info](#Version-info)
