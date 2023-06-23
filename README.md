@@ -2,8 +2,8 @@
 
 This repository contains the R code to fit the models described in the paper entitled _"A scalable approach for short-term disease forecasting in high spatial resolution areal data"_ [(Orozco-Acosta et al., 2023)](https://arxiv.org/abs/2303.16549), as well as to reproduce similar figures and tables to the ones presented in the paper. Note that due to confidentiality issues, simulated data sets has are provided and then, results are not fully reproducible.
 
-All computations were performed using version 0.5.1 of the R package [**bigDM**](https://cran.r-project.org/web/packages/bigDM/index.html), which was released on CRAN on February 23, 2023. This version includes adaptations to the `STCAR_INLA()`  function, making it compatible for short-term forecasting.
-The package also includes several univariate and multivariate spatial and spatio-temporal Bayesian models for high-dimensional areal count data based on the integrated nested Laplace approximation (INLA) estimation technique.
+All computations were performed using version 0.5.1 of the R package [**bigDM**](https://cran.r-project.org/web/packages/bigDM/index.html), which was released on CRAN on February 23, 2023. This version includes adaptations to the `STCAR_INLA()` function, making it compatible for short-term forecasting. 
+The package also includes several univariate and multivariate spatial and spatio-temporal Bayesian models for high-dimensional areal count data based on the integrated nested Laplace approximation (INLA) estimation technique (http://www.r-inla.org/).
 
 See [https://github.com/spatialstatisticsupna/bigDM](https://github.com/spatialstatisticsupna/bigDM) for details about installation and access to the vignettes accompanying this package.
 
@@ -18,7 +18,7 @@ See [https://github.com/spatialstatisticsupna/bigDM](https://github.com/spatials
 
 ## Cancer mortality data
 
-The proposed methodology is applied to project male lung cancer and overall cancer (all cites) mortality data in the 7907 municipalities of continental Spain by considering three-year ahead predictions using the period 1991-2012 as reference.
+The proposed methodology is applied to project male lung cancer and overall cancer (all sites) mortality data in the 7907 municipalities of continental Spain by considering three-year ahead predictions using the period 1991-2012 as reference.
 
 The `Data_LungCancer` object available at the **bigDM** package, contains simulated data of male lung cancer mortality counts (modified in order to preserve the confidentiality of the original data). Specifically, the data set contains the following variables:
 - ```ID```: character vector of geographic identifiers
@@ -48,25 +48,33 @@ Similarly, an Rdata containing simulated data of male overall cancer mortality c
 > load(url("https://emi-sstcdapp.unavarra.es/bigDM/inst/Rdata/Data_OverallCancer.Rdata"))
 
 > head(Data_OverallCancer)
-     ID year obs       exp       SMR        pop
-1 01001 1991   1 1.0125164 0.9876384  483.77402
-2 01002 1991  10 9.8199947 1.0183305 4948.98255
-3 01003 1991   1 1.8756597 0.5331458  667.90829
-4 01004 1991   1 1.4252320 0.7016401  591.11323
-5 01006 1991   0 0.2518388 0.0000000   62.81084
-6 01008 1991   2 1.0323942 1.9372445  354.79780
+     ID year obs       exp       SMR     pop
+1 01001 1991   1 1.0125164 0.9876384  483.77
+2 01002 1991  10 9.8199947 1.0183305 4948.98
+3 01003 1991   1 1.8756597 0.5331458  667.91
+4 01004 1991   1 1.4252320 0.7016401  591.11
+5 01006 1991   0 0.2518388 0.0000000   62.81
+6 01008 1991   2 1.0323942 1.9372445  354.80
 ```
-
 
 
 ## R code
 
 The code of this paper is organized in self-contained folders, which are named according to the corresponding sections of the paper.
 
+
 [**Section 4. Predictive validation study**](https://github.com/spatialstatisticsupna/Scable_Prediction/tree/main/Section4_PredictiveValidationStudy)
 
 
-[**Section 5. Illustration: projections of cancer mortality in Spain**](https://github.com/spatialstatisticsupna/Scable_Prediction/tree/main/Section5_Illustration)
+[**Section 5. Illustration: projections of cancer mortality in Spain**](https://github.com/spatialstatisticsupna/Scable_Prediction/tree/main/R/Section5_Illustration)
+
+- [**Fit_models.R**](https://github.com/spatialstatisticsupna/Scable_Prediction/tree/main/R/Section5_Illustration/Fit_models.R)
+
+  This R script contains the necessary functions to replicate with the fit of the spatio-temporal models considered in the illustration section of the paper. The code can be used with any other data sets with similar structure.
+  
+  It also computes the Logarithmic Score (based on both LOOCV and LGOCV approaches) and model selection criteria (DIC and WAIC) to reproduce the results shown in **Table 3**.
+  
+  **IMPORTANT NOTE**: In order to compute Logarithmic Score measures under the partition models (Disjoint or k-order neighbourhood models) the sub-models must be previously saved by setting the argument `STCAR_INLA(..., save.models=TRUE)`.
 
 
 **Version info**
