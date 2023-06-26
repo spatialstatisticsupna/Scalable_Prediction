@@ -65,7 +65,9 @@ The code of this paper is organized in self-contained folders, which are named a
 
 [**Section 4. Predictive validation study**](https://github.com/spatialstatisticsupna/Scalable_Prediction/tree/main/Section4_PredictiveValidationStudy)
 
-- **Predictive validation setup**: The following code can be used to replicate the definition of data frame configurations for the validation setup described in Section 4.
+- **IMPORTANT NOTE**: To reproduce Table 2, it is necessary to fit all the models for each configuration set of the validation study, which entails performing computations for over 18 days using the computational architecture outlined in Section 4.2
+
+- The following code can be used to replicate the definition of data configurations for the validation setup described in Section 4.
 ```r
 > t.min <- min(Data_LungCancer$year)
 > t.max <- max(Data_LungCancer$year)
@@ -99,15 +101,13 @@ List of 8
   ..$ SMR : num [1:142326] 0 0.715 0 0 0 ...
   ..$ pop : num [1:142326] 500.9 4909 673.2 593.5 63.2 ...
 ...
-```
-
-  **IMPORTANT NOTE**: In order to reproduce Table2, all the models must be fitted for each configuration set of the validation study (more than 18 days of calculations under the computational architecture described in Section 4.2).
-  
+```  
   
 - [**Validation_Study.R**](https://github.com/spatialstatisticsupna/Scalable_Prediction/tree/main/R/Section4_PredictiveValidationStudy/Validation_Study.R)
 
-  R code to reproduce **Figure 2**: One, two and three-year ahead predictions for the municipalities of Madrid, Palencia and Ávila using the disjoint model (left column) and 1st-order neighbourhood model (right column) with Type IV interactions.
+  R code to reproduce **Figure 2**: *One, two and three-year ahead predictions for the municipalities of Madrid, Palencia and Ãvila using the disjoint model (left column) and 1st-order neighbourhood model (right column) with Type IV interactions.*
   
+&nbsp;
 
 [**Section 5. Illustration: projections of cancer mortality in Spain**](https://github.com/spatialstatisticsupna/Scalable_Prediction/tree/main/R/Section5_Illustration)
 
