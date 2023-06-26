@@ -63,22 +63,25 @@ Similarly, an Rdata containing simulated data of male overall cancer mortality c
 The code of this paper is organized in self-contained folders, which are named according to the corresponding sections of the paper.
 
 
-[**Section 4. Predictive validation study**](https://github.com/spatialstatisticsupna/Scable_Prediction/tree/main/Section4_PredictiveValidationStudy)
+[**Section 4. Predictive validation study**](https://github.com/spatialstatisticsupna/Scalable_Prediction/tree/main/Section4_PredictiveValidationStudy)
 
 
-[**Section 5. Illustration: projections of cancer mortality in Spain**](https://github.com/spatialstatisticsupna/Scable_Prediction/tree/main/R/Section5_Illustration)
+[**Section 5. Illustration: projections of cancer mortality in Spain**](https://github.com/spatialstatisticsupna/Scalable_Prediction/tree/main/R/Section5_Illustration)
 
-- [**Fit_models.R**](https://github.com/spatialstatisticsupna/Scable_Prediction/tree/main/R/Section5_Illustration/Fit_models.R)
+- [**Fit_models.R**](https://github.com/spatialstatisticsupna/Scalable_Prediction/tree/main/R/Section5_Illustration/Fit_models.R)
 
-  This R script contains the necessary functions to replicate with the fit of the spatio-temporal models considered in the illustration section of the paper. The code can be used with any other data sets with similar structure.
+  This R script contains the necessary functions to replicate the fit of spatio-temporal *classical* and *partition* models considered in the illustration section of Orozco-Acosta et al. (2023) using the [bigDM](https://github.com/spatialstatisticsupna/bigDM) package. The code can be used with any other data sets with similar structure.
   
   It also computes the Logarithmic Score (based on both LOOCV and LGOCV approaches) and model selection criteria (DIC and WAIC) to reproduce the results shown in **Table 3**.
   
   **IMPORTANT NOTE**: In order to compute Logarithmic Score measures under the partition models (Disjoint or k-order neighbourhood models) the sub-models must be previously saved by setting the argument `STCAR_INLA(..., save.models=TRUE)`.
 
 
-**Version info**
+- [**LungCancer_Results.R**](https://github.com/spatialstatisticsupna/Scalable_Prediction/tree/main/R/Section5_Illustration/LungCancer_Results.R)
 
+
+
+### Version info
 ``` {.r}
 R version 4.2.1 (2022-06-23 ucrt)
 Platform: x86_64-w64-mingw32/x64 (64-bit)
