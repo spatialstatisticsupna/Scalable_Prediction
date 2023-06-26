@@ -9,28 +9,28 @@ library(tmap)
 ################################
 ## Load cancer mortality data ##
 ################################
-data("Data_LungCancer")
-str(Data_LungCancer)
+load(url("https://emi-sstcdapp.unavarra.es/bigDM/inst/Rdata/Data_OverallCancer.Rdata"))
+str(Data_OverallCancer)
 
 
 ########################################################################################
 ## Load final model (1st-order neighbourhood + Type IV interaction) fitted using INLA ##
 ########################################################################################
-load(url("https://emi-sstcdapp.unavarra.es/bigDM/inst/Rdata/INLAmodel_LungCancer.Rdata"))
+load(url("https://emi-sstcdapp.unavarra.es/bigDM/inst/Rdata/INLAmodel_OverallCancer.Rdata"))
 
 model <- k1_typeIV
 summary(model)
 
 
-############################################################################################
-## Figure 3b: Posterior median estimates of LUNG CANCER mortality rates per 100,000 males ##
-##            for the 7907 municipalities of continental during the period 1991-2015.     ##
-##            The years 2013 to 2015 were predicted.                                      ##
-############################################################################################
-S <- length(unique(Data_LungCancer$ID))
-T <- length(unique(Data_LungCancer$year))
-t.from <- min(unique(Data_LungCancer$year))
-t.to <- max(unique(Data_LungCancer$year))
+###############################################################################################
+## Figure 3b: Posterior median estimates of OVERALL CANCER mortality rates per 100,000 males ##
+##            for the 7907 municipalities of continental during the period 1991-2015.        ##
+##            The years 2013 to 2015 were predicted.                                         ##
+###############################################################################################
+S <- length(unique(Data_OverallCancer$ID))
+T <- length(unique(Data_OverallCancer$year))
+t.from <- min(unique(Data_OverallCancer$year))
+t.to <- max(unique(Data_OverallCancer$year))
 
 rates <- matrix(model$summary.fitted.values$`0.5quant`, ncol=T, nrow=S, byrow=FALSE)*100000
 colnames(rates) <- paste("rates",seq(t.from,t.to),sep=".")
@@ -42,7 +42,7 @@ carto.prov <- aggregate(Carto_SpainMUN[,"geometry"], list(ID.group = carto$prov)
 
 n.color <- 7
 paleta <- brewer.pal(n.color,"RdYlGn")[n.color:1]
-values <- c(-Inf,60,70,80,85,95,105,Inf)
+values <- c(-Inf,250,300,350,400,450,500,Inf)
 
 Map.Rates <- tm_shape(carto) +
   tm_polygons(col=paste("rates",round(seq(t.from,t.to,length.out=6)),sep="."),
@@ -56,15 +56,15 @@ Map.Rates <- tm_shape(carto) +
   tm_facets(nrow=2, ncol=3)
 
 tmap_mode("plot")
-tmap_save(Map.Rates, file="Figure3a.pdf")
+tmap_save(Map.Rates, file="Figure3b.pdf")
 
 
 ##########################################################################################################################
-## Figure 4a: Posterior predictive median estimates of LUNG CANCER mortality rates and its corresponding 95% CIs        ##
+## Figure 4b: Posterior predictive median estimates of OVERALL CANCER mortality rates and its corresponding 95% CIs     ##
 ##            per 100,000 males during the period 1991-2015 for the municipalities of Gerona, Madrid and Bilbao.        ##
 ##            Crude rates are shown as a filled circle. The vertical dotted line indicates where the prediction starts. ##
 ##########################################################################################################################
-obs_real <- matrix(Data_LungCancer$obs, nrow=S, ncol=T, byrow=F)
+obs_real <- matrix(Data_OverallCancer$obs, nrow=S, ncol=T, byrow=F)
 time <- t.from:t.to
 timerev <- t.to:t.from
 
@@ -72,7 +72,7 @@ small.area <- c("17079","28079","48020")
 name.area <- c("Gerona","Madrid","Bilbao")
 
 graphics.off()
-pdf(file="Figure4a.pdf", width=7.5, height=2.5)
+pdf(file="Figure4b.pdf", width=7.5, height=2.5)
 
 par(mfrow=c(1,3))
 par(mar = c(2,2,1,0.2))
@@ -92,19 +92,18 @@ for(s in 1:3){
     my.x = x*E[i]
     my.samples[,i]= rpois(ns, my.x)
   }
-  
   lower <- 1e+5/E*apply(my.samples, 2, quantile, 0.025)
   upper <- 1e+5/E*apply(my.samples, 2, quantile, 0.975)
   median <- 1e+5/E*apply(my.samples, 2, quantile, 0.5)
   
-  plot(time, obs, type="n", ylab="Predicted rates", xlab="", yaxt="n", xaxt="n", ylim=c(0,150), xlim=c(min(time),max(time)), cex.main = 0.8)
+  plot(time, obs, type="n", ylab="Predicted rates", xlab="", yaxt="n", xaxt="n", ylim=c(0,600), xlim=c(min(time),max(time)), cex.main = 0.8)
   polygon(c(time, timerev), c(lower, rev(upper)), col ="gray70", border = NA)
   lines(time, median, col="black", lwd=1, lty = 1)
   points(time, 1e+5*obs/E, pch=20, cex=0.5)
   abline(v=2012, col="black", lty=3, lwd=1)
   axis(1, at = c(1991,2002,2012), cex.axis = 0.8)
   minor.tick(nx = 5, ny = 5, tick.ratio = 0.3)
-  axis(2, at=seq(0,150,by=25), cex.axis = 0.8)
+  axis(2, at=seq(0,600,by=100), cex.axis = 0.8)
   title(main=name.area[s], adj=0.5, line=0.3, cex.main=1)
   legend("topleft", inset = 0.01, legend=c("Crude rates","Spatio-temporal prediction","95% credible interval"),
          col=c(NA,"black", NA), lty=c(0,1,0), cex=0.9, box.lty = 0)
@@ -114,11 +113,11 @@ for(s in 1:3){
 dev.off()
 
 
-#########################################################################################################
-## Table 4: Posterior median estimates of the predicted LUNG CANCER mortality rates per 100,000 males, ##
-##          its corresponding 95% credible intervals (CI) and width of the CIS for years 2013 and 2015 ##
-##          for the 47 municipalities that form the provincial capitals (sorted by increasing order)   ##
-#########################################################################################################
+############################################################################################################
+## Table 5: Posterior median estimates of the predicted OVERALL CANCER mortality rates per 100,000 males, ##
+##          its corresponding 95% credible intervals (CI) and width of the CIS for years 2013 and 2015    ##
+##          for the 47 municipalities that form the provincial capitals (sorted by increasing order)      ##
+############################################################################################################
 pred <- 2013:2015
 locpred <- which(model$.args$data$Year %in% pred)
 E <- model$.args$data$E[locpred]

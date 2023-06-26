@@ -79,6 +79,20 @@ The code of this paper is organized in self-contained folders, which are named a
 
 - [**LungCancer_Results.R**](https://github.com/spatialstatisticsupna/Scalable_Prediction/tree/main/R/Section5_Illustration/LungCancer_Results.R)
 
+  R code that contains the necessary functions to replicate the figures and tables of Section 5.1 (Lung cancer mortality). Note that slightly different results are obtained since we are using simulated counts to preserve the confidentiality of the original data. The final model (1st-order neighbourhood + Type IV interaction) fitted using INLA can be downloaded from [https://emi-sstcdapp.unavarra.es/bigDM/inst/Rdata/INLAmodel_LungCancer.Rdata](https://emi-sstcdapp.unavarra.es/bigDM/inst/Rdata/INLAmodel_LungCancer.Rdata).
+  
+  - **Figure 3a:** Maps of posterior median estimates of lung cancer mortality rates per 100,000 males
+  - **Figure 4a:** Posterior predictive median estimates of lung cancer mortality rates and its corresponding 95% credible intervals per 100,000 males for the municipalities of Gerona, Madrid and Bilbao.
+  - **Table 4:** Posterior median estimates of the predicted lung cancer mortality rates per 100,000 males, its corresponding 95% credible intervals (CI) and width of the CIS for years 2013 and 2015 for the 47 municipalities that form the provincial capitals.
+  
+
+- [**OverallCancer_Results.R**](https://github.com/spatialstatisticsupna/Scalable_Prediction/tree/main/R/Section5_Illustration/OverallCancer_Results.R)
+
+  R code that contains the necessary functions to replicate the figures and tables of Section 5.2 (Overall cancer mortality). Note that slightly different results are obtained since we are using simulated counts to preserve the confidentiality of the original data. The final model (1st-order neighbourhood + Type IV interaction) fitted using INLA can be downloaded from [https://emi-sstcdapp.unavarra.es/bigDM/inst/Rdata/INLAmodel_OverallCancer.Rdata](https://emi-sstcdapp.unavarra.es/bigDM/inst/Rdata/INLAmodel_OverallCancer.Rdata).
+  
+  - **Figure 3b:** Posterior median estimates of overall cancer mortality rates per 100,000 males
+  - **Figure 4a:** Posterior predictive median estimates of overall cancer mortality rates and its corresponding 95% credible intervals per 100,000 males for the municipalities of Gerona, Madrid and Bilbao.
+  - **Table 5:** Posterior median estimates of the predicted overall cancer mortality rates per 100,000 males, its corresponding 95% credible intervals (CI) and width of the CIS for years 2013 and 2015 for the 47 municipalities that form the provincial capitals.
 
 
 ### Version info
