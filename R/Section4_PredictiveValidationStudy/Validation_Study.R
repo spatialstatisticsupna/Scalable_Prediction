@@ -54,7 +54,7 @@ plot.Figure2 <- function(aux, title=NULL){
 I
 ##################################################################################################
 ## Figure 2: One, two and three-year ahead predictions for the municipalities of Madrid (top),  ##
-##           Palencia (middle) and Ávila (bottom) using the disjoint model (left column) and    ##
+##           Palencia (middle) and ?vila (bottom) using the disjoint model (left column) and    ##
 ##           1st-order neighbourhood model (right column) with Type IV interactions.            ##
 ##################################################################################################
 load("ValidationStudy_Figure2.Rdata")
@@ -82,7 +82,7 @@ Palencia <- ggarrange(Figure2a, Figure2b, ncol=2)
 ###################
 ## AVILA (05019) ##
 ###################
-Figure2a <- plot.Figure2(data.pred.k0[data.pred.k0$Area=="05019",], title="Disjoint model - Type IV - Ávila")
+Figure2a <- plot.Figure2(data.pred.k0[data.pred.k0$Area=="05019",], title="Disjoint model - Type IV - Avila")
 Figure2b <- plot.Figure2(data.pred.k1[data.pred.k1$Area=="05019",], title="1st order neighbourhood model - Type IV - Avila")
 Avila <- ggarrange(Figure2a, Figure2b, ncol=2)
 

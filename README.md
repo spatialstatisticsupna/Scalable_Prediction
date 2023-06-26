@@ -29,7 +29,7 @@ The `Data_LungCancer` object available at the **bigDM** package, contains simula
 - ```pop```: population at risk
 
 Use the following commands to load the data
-```r 
+``` {.r}
 > library(bigDM)
 > data("Data_LungCancer")
 
@@ -44,7 +44,7 @@ Use the following commands to load the data
 ```
 
 Similarly, an Rdata containing simulated data of male overall cancer mortality counts can be loaded as:
-```r 
+``` {.r}
 > load(url("https://emi-sstcdapp.unavarra.es/bigDM/inst/Rdata/Data_OverallCancer.Rdata"))
 
 > head(Data_OverallCancer)
@@ -68,7 +68,7 @@ The code of this paper is organized in self-contained folders, which are named a
 - **IMPORTANT NOTE**: To reproduce Table 2, it is necessary to fit all the models for each configuration set of the validation study, which entails performing computations for over 18 days using the computational architecture outlined in Section 4.2
 
 - The following code can be used to replicate the definition of data configurations for the validation setup described in Section 4.
-```r
+``` {.r}
 > t.min <- min(Data_LungCancer$year)
 > t.max <- max(Data_LungCancer$year)
 > 
@@ -140,9 +140,7 @@ List of 8
 
 ### Version info
 ``` {.r}
-R version 4.2.1 (2022-06-23 ucrt)
-Platform: x86_64-w64-mingw32/x64 (64-bit)
-Running under: Windows 10 x64 (build 17763)
+
 ```
 
 

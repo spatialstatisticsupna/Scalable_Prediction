@@ -152,11 +152,11 @@ ID.capitals.provinces <- c("01059","02003","03014","04013","05019","06015",
                            "40194","41091","42173","43148","44216","45168",
                            "46250","47186","48020","49275","50297")
 
-names.capital <- c("Vitoria","Albacete","Alicante","Almería","Ávila","Badajoz",
-                   "Barcelona","Burgos","Cáceres","Cádiz","Castellón","Ciudad Real",
-                   "Córdoba","A Coruña","Cuenca","Girona","Granada","Guadalajara",
-                   "San Sebastián","Huelva","Huesca","Jaén","León","Lérida",
-                   "Logroño","Lugo","Madrid","Málaga","Murcia","Pamplona","Ourense",
+names.capital <- c("Vitoria","Albacete","Alicante","Almeria","Avila","Badajoz",
+                   "Barcelona","Burgos","Caceres","Cadiz","Castellon","Ciudad Real",
+                   "Cordoba","A Coruna","Cuenca","Girona","Granada","Guadalajara",
+                   "San Sebastian","Huelva","Huesca","Jaen","Leon","Lerida",
+                   "Logrono","Lugo","Madrid","Malaga","Murcia","Pamplona","Ourense",
                    "Oviedo","Palencia","Pontevedra","Salamanca","Santander",
                    "Segovia","Sevilla","Soria","Tarragona","Teruel","Toledo",
                    "Valencia","Valladolid","Bilbao","Zamora","Zaragoza")
