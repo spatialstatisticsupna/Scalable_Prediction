@@ -5,7 +5,6 @@ library(ggpubr)
 library(INLA)
 
 
-
 #########################
 ## Auxiliary functions ##
 #########################
@@ -52,31 +51,7 @@ plot.Figure2 <- function(aux, title=NULL){
   return(resul)
 }
 
-
-#########################################################################
-## Generate data frames to replicate the validation study of Section 4 ##
-#########################################################################
-data("Data_LungCancer")
-head(Data_LungCancer)
-
-t.min <- min(Data_LungCancer$year)
-t.max <- max(Data_LungCancer$year)
-
-t.length <- 15
-t.periods <- 3
-
-Data_pred <- lapply(1:8, function(x){
-  cc <- seq(t.min+(x-1), t.min+t.length+(x+1))
-  data <- Data_LungCancer[Data_LungCancer$year %in% cc,]
-  data$obs[data$year %in% tail(unique(data$year), n=t.periods)] <- NA
-
-  return(data)
-})
-
-names(Data_pred) <- paste("config",1:8,sep=".")
-str(Data_pred,2)
-
-
+I
 ##################################################################################################
 ## Figure 2: One, two and three-year ahead predictions for the municipalities of Madrid (top),  ##
 ##           Palencia (middle) and Ávila (bottom) using the disjoint model (left column) and    ##

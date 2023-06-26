@@ -65,6 +65,49 @@ The code of this paper is organized in self-contained folders, which are named a
 
 [**Section 4. Predictive validation study**](https://github.com/spatialstatisticsupna/Scalable_Prediction/tree/main/Section4_PredictiveValidationStudy)
 
+- **Predictive validation setup**: The following code can be used to replicate the definition of data frame configurations for the validation setup described in Section 4.
+```r
+> t.min <- min(Data_LungCancer$year)
+> t.max <- max(Data_LungCancer$year)
+> 
+> t.length <- 15
+> t.periods <- 3
+> 
+> Data_pred <- lapply(1:8, function(x){
++   cc <- seq(t.min+(x-1), t.min+t.length+(x+1))
++   data <- Data_LungCancer[Data_LungCancer$year %in% cc,]
++   data$obs[data$year %in% tail(unique(data$year), n=t.periods)] <- NA
++   
++   return(data)
++ })
+> 
+> names(Data_pred) <- paste("config",1:8,sep=".")
+> str(Data_pred,2)
+List of 8
+ $ config.1:'data.frame':	142326 obs. of  6 variables:
+  ..$ ID  : chr [1:142326] "01001" "01002" "01003" "01004" ...
+  ..$ year: int [1:142326] 1991 1991 1991 1991 1991 1991 1991 1991 1991 1991 ...
+  ..$ obs : int [1:142326] 0 3 0 0 0 0 1 2 0 0 ...
+  ..$ exp : num [1:142326] 0.276 2.721 0.496 0.37 0.07 ...
+  ..$ SMR : num [1:142326] 0 1.1 0 0 0 ...
+  ..$ pop : num [1:142326] 483.8 4949 667.9 591.1 62.8 ...
+ $ config.2:'data.frame':	142326 obs. of  6 variables:
+  ..$ ID  : chr [1:142326] "01001" "01002" "01003" "01004" ...
+  ..$ year: int [1:142326] 1992 1992 1992 1992 1992 1992 1992 1992 1992 1992 ...
+  ..$ obs : int [1:142326] 0 2 0 0 0 0 0 1 1 1 ...
+  ..$ exp : num [1:142326] 0.2865 2.7962 0.5091 0.3791 0.0709 ...
+  ..$ SMR : num [1:142326] 0 0.715 0 0 0 ...
+  ..$ pop : num [1:142326] 500.9 4909 673.2 593.5 63.2 ...
+...
+```
+
+  **IMPORTANT NOTE**: In order to reproduce Table2, all the models must be fitted for each configuration set of the validation study (more than 18 days of calculations under the computational architecture described in Section 4.2).
+  
+  
+- [**Validation_Study.R**](https://github.com/spatialstatisticsupna/Scalable_Prediction/tree/main/R/Section4_PredictiveValidationStudy/Validation_Study.R)
+
+  R code to reproduce **Figure 2**: One, two and three-year ahead predictions for the municipalities of Madrid, Palencia and Ávila using the disjoint model (left column) and 1st-order neighbourhood model (right column) with Type IV interactions.
+  
 
 [**Section 5. Illustration: projections of cancer mortality in Spain**](https://github.com/spatialstatisticsupna/Scalable_Prediction/tree/main/R/Section5_Illustration)
 
@@ -79,7 +122,7 @@ The code of this paper is organized in self-contained folders, which are named a
 
 - [**LungCancer_Results.R**](https://github.com/spatialstatisticsupna/Scalable_Prediction/tree/main/R/Section5_Illustration/LungCancer_Results.R)
 
-  R code that contains the necessary functions to replicate the figures and tables of Section 5.1 (Lung cancer mortality). Note that slightly different results are obtained since we are using simulated counts to preserve the confidentiality of the original data. The final model (1st-order neighbourhood + Type IV interaction) fitted using INLA can be downloaded from [https://emi-sstcdapp.unavarra.es/bigDM/inst/Rdata/INLAmodel_LungCancer.Rdata](https://emi-sstcdapp.unavarra.es/bigDM/inst/Rdata/INLAmodel_LungCancer.Rdata).
+  R code that contains the necessary functions to replicate the figures and tables of Section 5.1 (*Lung cancer mortality*). Note that slightly different results are obtained since we are using simulated counts to preserve the confidentiality of the original data. The final model (1st-order neighbourhood + Type IV interaction) fitted using INLA can be downloaded from [https://emi-sstcdapp.unavarra.es/bigDM/inst/Rdata/INLAmodel_LungCancer.Rdata](https://emi-sstcdapp.unavarra.es/bigDM/inst/Rdata/INLAmodel_LungCancer.Rdata).
   
   - **Figure 3a:** Maps of posterior median estimates of lung cancer mortality rates per 100,000 males
   - **Figure 4a:** Posterior predictive median estimates of lung cancer mortality rates and its corresponding 95% credible intervals per 100,000 males for the municipalities of Gerona, Madrid and Bilbao.
@@ -88,7 +131,7 @@ The code of this paper is organized in self-contained folders, which are named a
 
 - [**OverallCancer_Results.R**](https://github.com/spatialstatisticsupna/Scalable_Prediction/tree/main/R/Section5_Illustration/OverallCancer_Results.R)
 
-  R code that contains the necessary functions to replicate the figures and tables of Section 5.2 (Overall cancer mortality). Note that slightly different results are obtained since we are using simulated counts to preserve the confidentiality of the original data. The final model (1st-order neighbourhood + Type IV interaction) fitted using INLA can be downloaded from [https://emi-sstcdapp.unavarra.es/bigDM/inst/Rdata/INLAmodel_OverallCancer.Rdata](https://emi-sstcdapp.unavarra.es/bigDM/inst/Rdata/INLAmodel_OverallCancer.Rdata).
+  R code that contains the necessary functions to replicate the figures and tables of Section 5.2 (*Overall cancer mortality*). Note that slightly different results are obtained since we are using simulated counts to preserve the confidentiality of the original data. The final model (1st-order neighbourhood + Type IV interaction) fitted using INLA can be downloaded from [https://emi-sstcdapp.unavarra.es/bigDM/inst/Rdata/INLAmodel_OverallCancer.Rdata](https://emi-sstcdapp.unavarra.es/bigDM/inst/Rdata/INLAmodel_OverallCancer.Rdata).
   
   - **Figure 3b:** Posterior median estimates of overall cancer mortality rates per 100,000 males
   - **Figure 4a:** Posterior predictive median estimates of overall cancer mortality rates and its corresponding 95% credible intervals per 100,000 males for the municipalities of Gerona, Madrid and Bilbao.
