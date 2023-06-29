@@ -138,9 +138,70 @@ List of 8
   - **Table 5:** Posterior median estimates of the predicted overall cancer mortality rates per 100,000 males, its corresponding 95% credible intervals (CI) and width of the CIS for years 2013 and 2015 for the 47 municipalities that form the provincial capitals.
 
 
-### Version info
-``` {.r}
+### R and R packages. Version info
+``` {r}
+R version 4.2.0 (2022-04-22)
+Platform: x86_64-pc-linux-gnu (64-bit)
+Running under: CentOS Linux 7 (Core)
 
+Matrix products: default
+BLAS:   /users/r/R-4.2.0/lib64/R/lib/libRblas.so
+LAPACK: /users/r/R-4.2.0/lib64/R/lib/libRlapack.so
+
+locale:
+ [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C
+ [3] LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8
+ [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_US.UTF-8
+ [7] LC_PAPER=en_US.UTF-8       LC_NAME=C
+ [9] LC_ADDRESS=C               LC_TELEPHONE=C
+[11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C
+
+attached base packages:
+[1] parallel  stats     graphics  grDevices utils     datasets  methods
+[8] base
+
+other attached packages:
+ [1] ggpubr_0.6.0       ggplot2_3.4.2      tmap_3.3-3         RColorBrewer_1.1-3
+ [5] INLA_22.12.16      sp_2.0-0           foreach_1.5.2      Matrix_1.5-4
+ [9] Hmisc_5.1-0        bigDM_0.5.1
+
+loaded via a namespace (and not attached):
+  [1] leafem_0.2.0       colorspace_2.0-3   ggsignif_0.6.4
+  [4] deldir_1.0-6       class_7.3-20       leaflet_2.1.1
+  [7] htmlTable_2.4.1    base64enc_0.1-3    dichromat_2.0-0.1
+ [10] rstudioapi_0.13    proxy_0.4-26       farver_2.1.0
+ [13] listenv_0.8.0      fansi_1.0.3        codetools_0.2-18
+ [16] splines_4.2.0      doParallel_1.0.17  knitr_1.39
+ [19] rlist_0.4.6.2      Formula_1.2-4      tmaptools_3.1-1
+ [22] broom_1.0.5        cluster_2.1.3      png_0.1-8
+ [25] compiler_4.2.0     backports_1.4.1    fastmap_1.1.0
+ [28] cli_3.6.1          s2_1.1.4           htmltools_0.5.2
+ [31] tools_4.2.0        coda_0.19-4        gtable_0.3.0
+ [34] glue_1.6.2         dplyr_1.1.2        wk_0.6.0
+ [37] gmodels_2.18.1.1   Rcpp_1.0.8.3       carData_3.0-5
+ [40] raster_3.5-15      vctrs_0.6.3        spdep_1.2-4
+ [43] gdata_2.18.0.1     nlme_3.1-157       iterators_1.0.14
+ [46] leafsync_0.1.0     crosstalk_1.2.0    lwgeom_0.2-13
+ [49] xfun_0.31          stringr_1.5.0      globals_0.15.0
+ [52] rbibutils_2.2.8    lifecycle_1.0.3    gtools_3.9.2.1
+ [55] rstatix_0.7.2      XML_3.99-0.10      future_1.26.1
+ [58] terra_1.5-21       LearnBayes_2.15.1  MASS_7.3-56
+ [61] scales_1.2.0       expm_0.999-6       spatialreg_1.2-3
+ [64] gridExtra_2.3      rpart_4.1.16       stringi_1.7.6
+ [67] fastDummies_1.6.3  e1071_1.7-9        checkmate_2.2.0
+ [70] boot_1.3-28        spData_2.0.1       Rdpack_2.3
+ [73] rlang_1.1.1        pkgconfig_2.0.3    evaluate_0.15
+ [76] lattice_0.20-45    purrr_1.0.1        sf_1.0-13
+ [79] labeling_0.4.2     htmlwidgets_1.5.4  cowplot_1.1.1
+ [82] tidyselect_1.2.0   parallelly_1.34.0  magrittr_2.0.3
+ [85] R6_2.5.1           generics_0.1.2     DBI_1.1.2
+ [88] pillar_1.9.0       foreign_0.8-82     withr_2.5.0
+ [91] units_0.8-0        stars_0.6-1        abind_1.4-5
+ [94] nnet_7.3-17        tibble_3.2.1       future.apply_1.9.0
+ [97] car_3.1-2          crayon_1.5.1       KernSmooth_2.23-20
+[100] utf8_1.2.2         rmarkdown_2.14     grid_4.2.0
+[103] data.table_1.14.2  digest_0.6.29      classInt_0.4-3
+[106] tidyr_1.3.0        munsell_0.5.0      viridisLite_0.4.0
 ```
 
 
