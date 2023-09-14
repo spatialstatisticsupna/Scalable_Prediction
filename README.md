@@ -65,7 +65,7 @@ Similarly, an Rdata containing simulated data of male overall cancer mortality c
 The code of this paper is organized in self-contained folders, which are named according to the corresponding sections of the paper.
 
 
-[**Section 4. Predictive validation study**](https://github.com/spatialstatisticsupna/Scalable_Prediction/tree/main/Section4_PredictiveValidationStudy)
+[**Section 4. Predictive validation study**](./Rcode/Section4_PredictiveValidationStudy)
 
 - **IMPORTANT NOTE**: To reproduce Table 2, it is necessary to fit all the models for each configuration set of the validation study, which entails performing computations for over 18 days using the computational architecture outlined in Section 4.2
 
