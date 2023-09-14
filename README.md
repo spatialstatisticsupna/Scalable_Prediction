@@ -1,37 +1,28 @@
 # A scalable approach for short-term disease forecasting in high spatial resolution areal data
 
-This repository contains the R code to fit the models described in the paper entitled _"A scalable approach for short-term disease forecasting in high spatial resolution areal data"_ [(Orozco-Acosta et al., 2023)](https://arxiv.org/abs/2303.16549), as well as to reproduce similar figures and tables to the ones presented in the paper. Note that due to confidentiality issues, simulated data sets has are provided and then, results are not fully reproducible.
+This repository contains the R code to reproduce the analyses presented in the paper entitled _"A scalable approach for short-term disease forecasting in high spatial resolution areal data"_ [(Orozco-Acosta et al., 2023)](https://arxiv.org/abs/2303.16549). Specifically, it contains several scripts organized in self-contained folders to reproduce the _Predictive validation study_ and _Illustration_ sections of the paper. Note that due to confidentiality issues, simulated data sets are provided and then, results are not fully reproducible.
 
-All computations were performed using version 0.5.1 of the R package [**bigDM**](https://cran.r-project.org/web/packages/bigDM/index.html), which was released on CRAN on February 23, 2023. This version includes adaptations to the `STCAR_INLA()` function, making it compatible for short-term forecasting. 
-The package also includes several univariate and multivariate spatial and spatio-temporal Bayesian models for high-dimensional areal count data based on the integrated nested Laplace approximation (INLA) estimation technique (http://www.r-inla.org/).
-
-See [https://github.com/spatialstatisticsupna/bigDM](https://github.com/spatialstatisticsupna/bigDM) for details about installation and access to the vignettes accompanying this package.
+All computations were performed using version 0.5.1 of the R package [**bigDM**](https://cran.r-project.org/web/packages/bigDM/index.html), which was released on CRAN on February 23, 2023. This version includes adaptations to the `STCAR_INLA()` function, making it compatible for short-term forecasting. The package also includes several univariate and multivariate spatial and spatio-temporal Bayesian models for high-dimensional areal count data based on the integrated nested Laplace approximation (INLA) estimation technique (http://www.r-inla.org/). See [https://github.com/spatialstatisticsupna/bigDM](https://github.com/spatialstatisticsupna/bigDM) for details about installation and access to the vignettes accompanying this package.
 
 
 ## Table of contents
 
-- [Cancer mortality data](#Cancer-mortality-data)
+- [Data](#Data)
 - [R code](#R-code)
 - [Acknowledgements](#Acknowledgements)
 - [References](#References)
 
 
-## Cancer mortality data
+## Data
 
 The proposed methodology is applied to project male lung cancer and overall cancer (all sites) mortality data in the 7907 municipalities of continental Spain by considering three-year ahead predictions using the period 1991-2012 as reference.
 
-The `Data_LungCancer` object available at the **bigDM** package, contains simulated data of male lung cancer mortality counts (modified in order to preserve the confidentiality of the original data). Specifically, the data set contains the following variables:
-- ```ID```: character vector of geographic identifiers
-- ```year```: numeric vector of years identifiers
-- ```obs```: observed number of cases
-- ```exp```: expected number of cases
-- ```SMR```: standardized mortality ratios
-- ```pop```: population at risk
+Please, note that the data used in this paper are subject to confidentiality agreements with the Spanish Statistical Office (INE), as we analyze cancer mortality data at the municipal level in Spain (NUTS4 level from the European nomenclature of territorial units for statistics).
 
-Use the following commands to load the data
+However, we provide a simulated data of male lung cancer mortality counts, which have been modified in order to preserve the confidentiality of the original data. The data can be directly loaded in R through our package **bigDM** by using the command
 ```r
 > library(bigDM)
-> data("Data_LungCancer")
+> data(Data_LungCancer, package="bigDM")
 
 > head(Data_LungCancer)
      ID year obs        exp      SMR     pop
@@ -43,9 +34,18 @@ Use the following commands to load the data
 6 01008 1991   0 0.29240328 0.000000  354.80
 ```
 
+The `Data_LungCancer` object contains the following variables:
+- ```ID```: character vector of geographic identifiers
+- ```year```: numeric vector of years identifiers
+- ```obs```: observed number of cases
+- ```exp```: expected number of cases
+- ```SMR```: standardized mortality ratios
+- ```pop```: population at risk
+
+
 Similarly, an Rdata containing simulated data of male overall cancer mortality counts can be loaded as:
 ```r
-> load(url("https://emi-sstcdapp.unavarra.es/bigDM/inst/Rdata/Data_OverallCancer.Rdata"))
+> load("./Data/Data_OverallCancer.Rdata")
 
 > head(Data_OverallCancer)
      ID year obs       exp       SMR     pop
