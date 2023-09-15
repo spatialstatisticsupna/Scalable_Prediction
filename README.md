@@ -64,36 +64,33 @@ Similarly, an Rdata containing simulated data of male overall cancer mortality c
 
 The code of this paper is organized in self-contained folders, which are named according to the corresponding sections of the paper.
 
-[**Section 4. Predictive validation study**](./Rcode/Section4_PredictiveValidationStudy)
+### [**Section 4. Predictive validation study**](./Rcode/Section4_PredictiveValidationStudy)
 
-The script [Validation_study.R](./Rcode/Section4_PredictiveValidationStudy/Validation_study.R) enables the replication of the predictive validation study presented in Chapter 4 using simulated data for male lung cancer mortality counts, with the aim of obtaining similar results to those presented in Table 2."
+The script [Validation_study.R](./Rcode/Section4_PredictiveValidationStudy/Validation_study.R) enables the replication of the predictive validation study presented in Chapter 4 using simulated data for male lung cancer mortality counts, with the aim of obtaining similar results to those presented in Table 2.
 
 It is structured in four main steps:
 
-**1. Generate the 8 validation configurations**
+1. **Generate the 8 validation configurations**
 
-  As described in the paper, each configuration uses $T=15$ years of data to fit the model and predict at time points $T+1$, $T+2$ and $T+3$. The first configuration uses data from 1991 to 2005, the second configuration from 1992 to 2006, while the last configuration uses data from 1998 to 2012.
+    As described in the paper, each configuration uses $T=15$ years of data to fit the model and predict at time points $T+1$, $T+2$ and $T+3$. The first configuration uses data from 1991 to 2005, the second configuration from 1992 to 2006, while the last configuration uses data from 1998 to 2012.
   
-**2. Fit the models with INLA**
+2. **Fit the models with INLA**
 
-  The script allows to select the model to be fitted using the `model` (one of either `"Classical"`, `"Disjoint"` or `"1st-order nb"`) and `interaction` (one of either `"TypeI"`, `"TypeII"`, `"TypeIII"` or `"TypeIV"`) arguments. Each combination of these arguments will reproduce a line of Table 2.
+    The script allows to select the model to be fitted using the `model` (one of either `"Classical"`, `"Disjoint"` or `"1st-order nb"`) and `interaction` (one of either `"TypeI"`, `"TypeII"`, `"TypeIII"` or `"TypeIV"`) arguments. Each combination of these arguments will reproduce a line of Table 2.
+
+    Please, note that an alternative approximation strategy of INLA (not considered in the paper) has been set by default to speed up computations.
+
+3. **Compute model assessment criteria**
+
+    After fitting the models for each configuration, several measures (MAE - mean absolute error, RMSE - root mean square error, IS - interval score) are computed to assess the predictive performance of the models. The results will reproduce similar values to those presented in Table 2, as well as Tables A1 and A2 of the Appendix section.
   
-  Please, note that an alternative approximation strategy of INLA (not considered in the paper) has been set by default to speed up computations.
+    Please, note that these computations are very time consuming in Windows OS.
 
-**3. Compute model assessment criteria**
+4. **Compute Figure 2**
+   
+    R code to reproduce Figure 2: *One, two and three-year ahead predictions for the municipalities of Madrid, Palencia and Ávila using the disjoint model (left column) and 1st-order neighbourhood model (right column) with Type IV interactions.*
 
-  After fitting the models for each configuration, several measures (MAE - mean absolute error, RMSE - root mean square error, IS - interval score) are computed to assess the predictive performance of the models. The results will reproduce similar values to those presented in Table 2, as well as Tables A1 and A2 of the Appendix section.
-  
-  Please, note that these computations are very time consuming in Windows OS.
-
-
-**4. Compute Figure 2**
-  R code to reproduce Figure 2: *One, two and three-year ahead predictions for the municipalities of Madrid, Palencia and Ávila using the disjoint model (left column) and 1st-order neighbourhood model (right column) with Type IV interactions.*
-
-
-&nbsp;
-
-[**Section 5. Illustration: projections of cancer mortality in Spain**](https://github.com/spatialstatisticsupna/Scalable_Prediction/tree/main/R/Section5_Illustration)
+### [**Section 5. Illustration: projections of cancer mortality in Spain**](https://github.com/spatialstatisticsupna/Scalable_Prediction/tree/main/R/Section5_Illustration)
 
 - [**Fit_models.R**](https://github.com/spatialstatisticsupna/Scalable_Prediction/tree/main/R/Section5_Illustration/Fit_models.R)
 
