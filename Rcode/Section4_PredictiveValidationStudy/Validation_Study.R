@@ -3,6 +3,7 @@
 ####################################################################################################
 library(bigDM)
 library(INLA)
+library(parallel)
 library(sf)
 
 setwd(dirname(rstudioapi::getSourceEditorContext()$path))
@@ -57,7 +58,7 @@ interaction <- "TypeI"  # "TypeII", "TypeIII" or "TypeIV"
 
 
 ## Additional INLA parameters (faster computations) ##
-## To use the same strategy of the paper: inla.mode <- "classic"
+## To use the same strategy of the paper set: inla.mode <- "classic"
 inla.mode <- "compact"
 
 ## CAUTION: These computations are very time consuming! ##
@@ -68,7 +69,7 @@ for(i in seq(1,8)){
                              spatial="intrinsic", temporal="rw1", interaction=interaction, 
                              model="global", compute.fitted.values=TRUE,
                              inla.mode=inla.mode)
-  }
+      }
   if(model=="Disjoint"){
     res <- bigDM::STCAR_INLA(carto=Carto_SpainMUN, data=Data_pred[[i]], ID.group="ID.prov",
                              ID.area="ID", ID.year="year", O="obs", E="pop", 
@@ -84,7 +85,10 @@ for(i in seq(1,8)){
                              inla.mode=inla.mode)
   }
   
+  res$.args$data$obs_true <- Data_pred[[i]]$obs.true
+  
   models.INLA[[interaction]][[i]] <- list(data=res$.args$data,
+                                          summary.fitted.values=res$summary.fitted.values,
                                           marginals.fitted.values=res$marginals.fitted.values,
                                           cpu.used=res$cpu.used)
 }
@@ -95,24 +99,8 @@ for(i in seq(1,8)){
 ##########################################
 source("Auxiliary_functions.R")
 
-load("../../../global_typeI_obj.Rdata")
-for(i in 1:8){
-  models.INLA$TypeI[[i]] <- global_typeI_obj[[i]]
-  names(models.INLA$TypeI[[i]]) <- c("data","summary.fitted","marginals.fitted","cpu.used")
-}
-
-## CAUTION: These computations are very time consuming! ##
-models.INLA$TypeI$config.1$data$obs_true <- Data_pred$config.1$obs.true
-models.INLA$TypeI$config.2$data$obs_true <- Data_pred$config.2$obs.true
-models.INLA$TypeI$config.3$data$obs_true <- Data_pred$config.3$obs.true
-models.INLA$TypeI$config.4$data$obs_true <- Data_pred$config.4$obs.true
-models.INLA$TypeI$config.5$data$obs_true <- Data_pred$config.5$obs.true
-models.INLA$TypeI$config.6$data$obs_true <- Data_pred$config.6$obs.true
-models.INLA$TypeI$config.7$data$obs_true <- Data_pred$config.7$obs.true
-models.INLA$TypeI$config.8$data$obs_true <- Data_pred$config.8$obs.true
-
-count.pred <- lapply(models.INLA[[interaction]], function(x) compute.pred(x))
-
+## CAUTION: These computations are very time consuming in Windows OS!
+count.pred <- lapply(models.INLA[[interaction]], function(x) compute.pred(x, ID.area=ID.area))
 
 ## Compute which areas have proportion of zero observed cases during the study period less or equal than 0.2##
 cases <- matrix(Data_LungCancer$obs, nrow=S, ncol=T, byrow=F)
@@ -126,8 +114,7 @@ rates.loc <- which(apply(rates,1,function(x) all(x>2)))
 carto.k1 <- divide_carto(Carto_SpainMUN, ID.group="ID.prov", k=1)
 ID <- unlist(lapply(carto.k1, function(x) x$ID))
 ID.border <- names(which(table(ID)>1))
-border.loc <- union(rates.loc, which(Carto_SpainMUN$ID %in% ID.border))
-
+border.loc <- intersect(rates.loc, which(Carto_SpainMUN$ID %in% ID.border))
 
 ## Compute average values of Table 2 / Table A1 / Table A2 ##
 table.loc <- list("Table 2"=1:S, "Table A1"=loc.prop, "Table A2"=border.loc)
@@ -165,6 +152,6 @@ Table <- lapply(table.loc, function(i){
 lapply(Table, function(x) round(do.call(rbind,x[1:3]),2))
 
 
-#################################
-## 4) Code to compute Figure 2 ##
-#################################
+#########################
+## 4) Compute Figure 2 ##
+#########################

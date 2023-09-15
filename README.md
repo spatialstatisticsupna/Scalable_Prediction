@@ -64,51 +64,33 @@ Similarly, an Rdata containing simulated data of male overall cancer mortality c
 
 The code of this paper is organized in self-contained folders, which are named according to the corresponding sections of the paper.
 
-
 [**Section 4. Predictive validation study**](./Rcode/Section4_PredictiveValidationStudy)
 
-- **IMPORTANT NOTE**: To reproduce Table 2, it is necessary to fit all the models for each configuration set of the validation study, which entails performing computations for over 18 days using the computational architecture outlined in Section 4.2
+The script [Validation_study.R](./Rcode/Section4_PredictiveValidationStudy/Validation_study.R) enables the replication of the predictive validation study presented in Chapter 4 using simulated data for male lung cancer mortality counts, with the aim of obtaining similar results to those presented in Table 2."
 
-- The following code can be used to replicate the definition of data configurations for the validation setup described in Section 4.
-```r
-> t.min <- min(Data_LungCancer$year)
-> t.max <- max(Data_LungCancer$year)
-> 
-> t.length <- 15
-> t.periods <- 3
-> 
-> Data_pred <- lapply(1:8, function(x){
-+   cc <- seq(t.min+(x-1), t.min+t.length+(x+1))
-+   data <- Data_LungCancer[Data_LungCancer$year %in% cc,]
-+   data$obs[data$year %in% tail(unique(data$year), n=t.periods)] <- NA
-+   
-+   return(data)
-+ })
-> 
-> names(Data_pred) <- paste("config",1:8,sep=".")
-> str(Data_pred,2)
-List of 8
- $ config.1:'data.frame':	142326 obs. of  6 variables:
-  ..$ ID  : chr [1:142326] "01001" "01002" "01003" "01004" ...
-  ..$ year: int [1:142326] 1991 1991 1991 1991 1991 1991 1991 1991 1991 1991 ...
-  ..$ obs : int [1:142326] 0 3 0 0 0 0 1 2 0 0 ...
-  ..$ exp : num [1:142326] 0.276 2.721 0.496 0.37 0.07 ...
-  ..$ SMR : num [1:142326] 0 1.1 0 0 0 ...
-  ..$ pop : num [1:142326] 483.8 4949 667.9 591.1 62.8 ...
- $ config.2:'data.frame':	142326 obs. of  6 variables:
-  ..$ ID  : chr [1:142326] "01001" "01002" "01003" "01004" ...
-  ..$ year: int [1:142326] 1992 1992 1992 1992 1992 1992 1992 1992 1992 1992 ...
-  ..$ obs : int [1:142326] 0 2 0 0 0 0 0 1 1 1 ...
-  ..$ exp : num [1:142326] 0.2865 2.7962 0.5091 0.3791 0.0709 ...
-  ..$ SMR : num [1:142326] 0 0.715 0 0 0 ...
-  ..$ pop : num [1:142326] 500.9 4909 673.2 593.5 63.2 ...
-...
-```  
-  
-- [**Validation_Study.R**](https://github.com/spatialstatisticsupna/Scalable_Prediction/tree/main/R/Section4_PredictiveValidationStudy/Validation_Study.R)
+It is structured in four main steps:
 
-  R code to reproduce **Figure 2**: *One, two and three-year ahead predictions for the municipalities of Madrid, Palencia and Ávila using the disjoint model (left column) and 1st-order neighbourhood model (right column) with Type IV interactions.*
+**1. Generate the 8 validation configurations**
+
+  As described in the paper, each configuration uses $T=15$ years of data to fit the model and predict at time points $T+1$, $T+2$ and $T+3$. The first configuration uses data from 1991 to 2005, the second configuration from 1992 to 2006, while the last configuration uses data from 1998 to 2012.
   
+**2. Fit the models with INLA**
+
+  The script allows to select the model to be fitted using the `model` (one of either `"Classical"`, `"Disjoint"` or `"1st-order nb"`) and `interaction` (one of either `"TypeI"`, `"TypeII"`, `"TypeIII"` or `"TypeIV"`) arguments. Each combination of these arguments will reproduce a line of Table 2.
+  
+  Please, note that an alternative approximation strategy of INLA (not considered in the paper) has been set by default to speed up computations.
+
+**3. Compute model assessment criteria**
+
+  After fitting the models for each configuration, several measures (MAE - mean absolute error, RMSE - root mean square error, IS - interval score) are computed to assess the predictive performance of the models. The results will reproduce similar values to those presented in Table 2, as well as Tables A1 and A2 of the Appendix section.
+  
+  Please, note that these computations are very time consuming in Windows OS.
+
+
+**4. Compute Figure 2**
+  R code to reproduce Figure 2: *One, two and three-year ahead predictions for the municipalities of Madrid, Palencia and Ávila using the disjoint model (left column) and 1st-order neighbourhood model (right column) with Type IV interactions.*
+
+
 &nbsp;
 
 [**Section 5. Illustration: projections of cancer mortality in Spain**](https://github.com/spatialstatisticsupna/Scalable_Prediction/tree/main/R/Section5_Illustration)

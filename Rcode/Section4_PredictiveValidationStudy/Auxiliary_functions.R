@@ -4,23 +4,42 @@
 #'
 #' @param res a list containing some elements (original data, marginals of the fitted values and computational time) of the \code{inla} model.
 #' @param ns number of samples (default to 5000). See \help(inla.rmarginal) for further details.
-compute.pred <- function(res, ns=5000){
+#' @param ID.area optional argument (default \code{NULL}) to specify for which areas the posterior predictive counts should be computed.
+compute.pred <- function(res, ns=5000, ID.area=NULL){
   
-  loc_pred <- which(is.na(res$data$O))
+  if(is.null(ID.area)) ID.area <- unique(res$data$Area)
+  
+  loc_pred <- which(is.na(res$data$O) & (res$data$Area %in% ID.area))
   aux <- res$data[loc_pred,c("Area","Year","obs_true")]
   aux$period <- rep(c("1-year ahead","2-year ahead","3-year ahead"), each=length(unique(aux$Area)))
   
-  set.seed(1234)
-  for(i in loc_pred){
-    s <- inla.rmarginal(ns, res$marginals.fitted.values[[i]])
-    my.x <- s*res$data$E[i]
-    samples <- rpois(ns, my.x)
-    quant <- quantile(samples, probs=c(0.5, 0.025, 0.975))
+  if(Sys.info()[1]=="Windows"){
+    set.seed(1234)
     
-    aux[as.character(i),"obs_pred"] <- quant[1]
-    aux[as.character(i),"quant0.025"] <- quant[2]
-    aux[as.character(i),"quant0.975"] <- quant[3]
+    pred <- do.call(rbind,lapply(loc_pred, function(i) {
+      s <- inla.rmarginal(ns, res$marginals.fitted.values[[i]])
+      my.x <- s*res$data$E[i]
+      samples <- rpois(ns, my.x)
+      quant <- quantile(samples, probs=c(0.025, 0.975))
+      
+      data.frame(obs_pred=res$summary.fitted.values$mean[[i]]*res$data$E[i],
+                 `quant0.025`=quant[1], `quant0.975`=quant[2])
+    }))
+  }else{
+    pred <- do.call(rbind,mclapply(loc_pred, function(i) {
+      set.seed(1234)
+      
+      s <- inla.rmarginal(ns, res$marginals.fitted.values[[i]])
+      my.x <- s*res$data$E[i]
+      samples <- rpois(ns, my.x)
+      quant <- quantile(samples, probs=c(0.025, 0.975))
+      
+      data.frame(obs_pred=res$summary.fitted.values$mean[[i]]*res$data$E[i],
+                 `quant0.025`=quant[1], `quant0.975`=quant[2])
+    },mc.cores=detectCores()))
   }
+  
+  aux <- cbind(aux,pred)
   
   return(aux)
 }
