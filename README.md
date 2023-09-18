@@ -66,7 +66,7 @@ The code of this paper is organized in self-contained folders, which are named a
 
 ### [**Section 4. Predictive validation study**](./Rcode/Section4_PredictiveValidationStudy)
 
-The script [Validation_study.R](./Rcode/Section4_PredictiveValidationStudy/Validation_study.R) enables the replication of the predictive validation study presented in Section 4 of the paper using simulated data for male lung cancer mortality counts. At the end, similar results to those presented in Table 2 will be obtained.
+The script [Validation_study.R](./Rcode/Section4_PredictiveValidationStudy/Validation_study.R) enables the replication of the predictive validation study presented in Section 4 of the paper using simulated data for male lung cancer mortality counts. At the end, similar results to those presented in Table 2, Table A1 and Table A2 will be obtained.
 
 The script is structured in four main steps:
 
@@ -82,7 +82,7 @@ The script is structured in four main steps:
 
 3. **Compute model assessment criteria**
 
-    After fitting the models for each configuration, several measures (MAE - mean absolute error, RMSE - root mean square error, IS - interval score) are computed to assess their predictive performance. The results will reproduce similar values to those presented in Table 2, as well as Tables A1 and A2 of the Appendix section.
+    After fitting the models for each configuration, several measures (MAE - mean absolute error, RMSE - root mean square error, IS - interval score) are computed to assess their predictive performance. The results will reproduce similar values to those presented in Table 2, as well as Tables A1 and A2 of the Appendix section. The results are stored in the `results/` folder.
   
     Please, note that these computations are very time consuming in Windows OS.
 
