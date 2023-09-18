@@ -96,10 +96,13 @@ for(i in seq(1,8)){
                                           cpu.used=res$cpu.used)
 }
 
+# save(models.INLA, file=paste0("ValidationStudy_",model,".Rdata"))
+
 
 ##########################################
 ## 3) Compute model assessment criteria ##
 ##########################################
+# load(paste0("ValidationStudy_",model,".Rdata"))
 source("Auxiliary_functions.R")
 
 ## CAUTION: These computations are very time consuming in Windows OS!
