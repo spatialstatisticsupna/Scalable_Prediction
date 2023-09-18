@@ -106,7 +106,7 @@ for(i in seq(1,8)){
 source("Auxiliary_functions.R")
 
 ## CAUTION: These computations are very time consuming in Windows OS!
-count.pred <- lapply(models.INLA[[interaction]], function(x) compute.pred(x, ID.area=ID.area))
+count.pred <- lapply(models.INLA[[interaction]], function(x) compute.pred(x))
 
 ## Compute which areas have proportion of zero observed cases during the study period less or equal than 0.2##
 cases <- matrix(Data_LungCancer$obs, nrow=S, ncol=T, byrow=F)
@@ -155,7 +155,21 @@ Table <- lapply(table.loc, function(i){
   return(list(IS=IS, MAE=MAE, RMSE=RMSE, Time=Time))
 })
 
-lapply(Table, function(x) round(do.call(rbind,x[1:3]),2))
+
+## Create and save tables ##
+aux <- lapply(Table, function(x) round(do.call(cbind,x),2))
+table.columns <- list("1-year ahead"="1-year ahead","2-year ahead"="2-year ahead","3-year ahead"="3-year ahead")
+
+Table2 <- lapply(table.columns, function(x) aux$`Table 2`[x,])
+print(Table2)
+
+TableA1 <- lapply(table.columns, function(x) aux$`Table A1`[x,])
+print(TableA1)
+
+TableA2 <- lapply(table.columns, function(x) aux$`Table A2`[x,])
+print(TableA2)
+
+save(list=c("Table2","TableA1","TableA2"), file="../../results/ValidationStudy_Tables.Rdata")
 
 
 #########################
