@@ -5,6 +5,18 @@
 #' @param res a list containing some elements (original data, marginals of the fitted values and computational time) of the \code{inla} model.
 #' @param ns number of samples (default to 5000). See \help(inla.rmarginal) for further details.
 #' @param ID.area optional argument (default \code{NULL}) to specify for which areas the posterior predictive counts should be computed.
+#' 
+#' @return This function returns a \code{data.frame} object with the following variables:
+#' \itemize{
+#'   \item \code{Area}: character vector of geographic identifiers
+#'   \item \code{Year}: numeric vector of years identifiers
+#'   \item \code{obs_true}: numeric vector with the real observed number of cases
+#'   \item \code{period}: character vector indicating one, two or three-year ahead predictions
+#'   \item \code{obs_pred}: numeric vector with the expected values of the posterior predictive counts
+#'   \item \code{quant0.025}: numeric vector with the 2.5 quantile of the posterior predictive counts
+#'   \item \code{quant0.975}: numeric vector with the 97.5 quantile of the posterior predictive counts
+#' }
+#' 
 compute.pred <- function(res, ns=5000, ID.area=NULL){
   
   if(is.null(ID.area)) ID.area <- unique(res$data$Area)
