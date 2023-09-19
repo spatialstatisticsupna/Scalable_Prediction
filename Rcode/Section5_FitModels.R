@@ -1,26 +1,35 @@
-rm(list=ls())
+###################################################################################
+## R script to reproduce the illustration section of Orozco-Acosta et al. (2023) ##
+###################################################################################
+
+## We recommend to install the latest version of 'bigDM' package
+# devtools::install_github("spatialstatisticsupna/bigDM")
 library(bigDM)
 library(INLA)
+library(sf)
 library(tmap)
 
+setwd(dirname(rstudioapi::getSourceEditorContext()$path))
 
-###################################################################
-## Load male lung and overall cancer (all sites) mortality data  ##
-###################################################################
-data("Data_LungCancer")
+
+######################################################################
+## 1) Load male lung and overall cancer (all sites) mortality data  ##
+######################################################################
+load("../../data/Data_LungCancer.Rdata")
 str(Data_LungCancer)
 
-load(url("https://emi-sstcdapp.unavarra.es/bigDM/inst/Rdata/Data_OverallCancer.Rdata"))
+load("../../data/Data_OverallCancer.Rdata")
 str(Data_OverallCancer)
+
 
 ## Set to 'NA' the count data for prediction years ##
 Data_LungCancer$obs[Data_LungCancer$year %in% 2013:2015] <- NA
 Data_OverallCancer$obs[Data_OverallCancer$year %in% 2013:2015] <- NA
 
 
-#####################################################
-## Load cartography file of Spanish municipalities ##
-#####################################################
+########################################################
+## 2) Load cartography file of Spanish municipalities ##
+########################################################
 data("Carto_SpainMUN")
 head(Carto_SpainMUN)
 
@@ -32,9 +41,9 @@ Map <- tm_shape(Carto_SpainMUN) + tm_polygons() +
 print(Map)
 
 
-####################################################
-## Fit the models using the STCAR_INLA() function ##
-####################################################
+#######################################################
+## 3) Fit the models using the STCAR_INLA() function ##
+#######################################################
 help("STCAR_INLA")
 
 ## Select the data ##
@@ -44,21 +53,24 @@ if(cancer=="Lung") data <- Data_LungCancer
 if(cancer=="Overall") data <- Data_OverallCancer
 
 
-## Set the aproximation strategy for INLA ##
-strategy <- "gaussian"  # strategy <- "simplified.laplace 
+## Additional INLA parameters (faster computations) ##
+## To use the same strategy of the paper set: inla.mode <- "classic"
+inla.mode <- "compact"
 
 
-## Classical models (not run) 
-##############################
-global_typeI <- STCAR_INLA(carto=Carto_SpainMUN, data=data,
-                           ID.area="ID", ID.year="year", O="obs", E="pop",
-                           spatial="BYM2", temporal="rw1", interaction="TypeI",
-                           model="global", strategy=strategy)
+## CAUTION: These computations are very time consuming! ##
 
-global_typeIII <- STCAR_INLA(carto=Carto_SpainMUN, data=data,
-                             ID.area="ID", ID.year="year", O="obs", E="pop",
-                             spatial="BYM2", temporal="rw1", interaction="TypeIII",
-                             model="global", strategy=strategy)
+## Classical models 
+#####################
+Classical_typeI <- bigDM::STCAR_INLA(carto=Carto_SpainMUN, data=data,
+                                     ID.area="ID", ID.year="year", O="obs", E="pop",
+                                     spatial="BYM2", temporal="rw1", interaction="TypeI",
+                                     model="global", compute.fitted.values=TRUE, inla.mode=inla.mode)
+
+Classical_typeIII <- bigDM::STCAR_INLA(carto=Carto_SpainMUN, data=data,
+                                       ID.area="ID", ID.year="year", O="obs", E="pop",
+                                       spatial="BYM2", temporal="rw1", interaction="TypeIII",
+                                       model="global", compute.fitted.values=TRUE, inla.mode=inla.mode)
 
 
 ## Disjoint models 
@@ -68,11 +80,12 @@ workers <- future::availableWorkers()[-1]
 type <- list(TypeI="TypeI", TypeII="TypeII", TypeIII="TypeIII", TypeIV="TypeIV")
 
 MODELS.k0 <- lapply(type, function(x){
-  STCAR_INLA(carto=Carto_SpainMUN, data=data, ID.group="ID.prov",
-             ID.area="ID", ID.year="year", O="obs", E="pop",
-             spatial="BYM2", temporal="rw1", interaction=x,
-             model="partition", k=0, compute.fitted.values=TRUE,
-             strategy=strategy, plan="cluster", workers=workers)
+  bigDM::STCAR_INLA(carto=Carto_SpainMUN, data=data, ID.group="ID.prov",
+                    ID.area="ID", ID.year="year", O="obs", E="pop",
+                    spatial="BYM2", temporal="rw1", interaction=x,
+                    model="partition", k=0, compute.fitted.values=TRUE,
+                    inla.mode=inla.mode, plan="cluster", workers=workers,
+                    save.models=TRUE)
 })
 
 
@@ -83,44 +96,30 @@ workers <- future::availableWorkers()[-1]
 type <- list(TypeI="TypeI", TypeII="TypeII", TypeIII="TypeIII", TypeIV="TypeIV")
 
 MODELS.k1 <- lapply(type, function(x){
-  STCAR_INLA(carto=Carto_SpainMUN, data=data, ID.group="ID.prov",
-             ID.area="ID", ID.year="year", O="obs", E="pop",
-             spatial="BYM2", temporal="rw1", interaction=x,
-             model="partition", k=1, compute.fitted.values=TRUE,
-             strategy=strategy, plan="cluster", workers=workers)
+  bigDM::STCAR_INLA(carto=Carto_SpainMUN, data=data, ID.group="ID.prov",
+                    ID.area="ID", ID.year="year", O="obs", E="pop",
+                    spatial="BYM2", temporal="rw1", interaction=x,
+                    model="partition", k=1, compute.fitted.values=TRUE,
+                    inla.mode=inla.mode, plan="cluster", workers=workers,
+                    save.models=TRUE)
 })
 
 
-#####################################################################################################
-## Table 3: Logarithmic score using both LOOCV and LGOCV techniques, model selection criteria and  ##
-##          computational time (in minutes) for cancer mortality data with models fitted with INLA ##
-#####################################################################################################
+########################
+## 4) Compute Table 3 ##
+########################
+source("../Auxiliary_functions.R")
+
 sdunif="expression:
           logdens=-log_precision/2;
           return(logdens)"
 
-CV <- function(x, m=3){
-  x$.args$inla.call <- NULL
-  
-  LOOCV <- inla.group.cv(result=x, num.level.sets=-1)
-  LGOCV <- inla.group.cv(result=x, num.level.sets=m)
-  
-  data <- x$.args$data
-  data$ID <- paste(data$Year, data$Area, sep=".")
-  
-  return(list(LOOCV=LOOCV, LGOCV=LGOCV, data=data))
-}
 
-compute.DIC <- function(x){
-  data.frame(DIC=x$dic$dic,
-             WAIC=x$waic$waic,
-             Time=x$cpu.used[4]/60)
-}
+## CAUTION: These computations are very time consuming! ##
 
-######################
-## Classical models ##
-######################
-MODELS <- list(TypeI=global_typeI, TypeIII=global_typeIII)
+## Classical models 
+#####################
+MODELS <- list(TypeI=Classical_typeI, TypeIII=Classical_typeIII)
 
 aux <- lapply(MODELS, CV)
 Table3a <- lapply(aux, function(x){
@@ -135,9 +134,8 @@ Table3a$Time <- unlist(lapply(MODELS, function(x) x$cpu.used[4]/60))
 Table3a
 
 
-#####################
-## Disjoint models ##
-#####################
+## Disjoint models 
+###################
 Table3b <- data.frame(LOOCV=rep(NA,4), LGOCV=rep(NA,4),
                       row.names=paste("k0_type",c("I","II","III","IV"),sep=""))
 
@@ -200,9 +198,8 @@ Table3b$Time <- unlist(lapply(MODELS.k0, function(x) x$cpu.used[3]/60))
 Table3b
 
 
-#########################
-## 1st-order nb models ##
-#########################
+## 1st-order neighbourhood models 
+##################################
 Table3c<- data.frame(LOOCV=rep(NA,4), LGOCV=rep(NA,4),
                      row.names=paste("k1_type",c("I","II","III","IV"),sep=""))
 
