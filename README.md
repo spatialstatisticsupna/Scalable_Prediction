@@ -1,6 +1,6 @@
 # A scalable approach for short-term disease forecasting in high spatial resolution areal data
 
-This repository contains the R code to reproduce the analyses presented in the paper entitled _"A scalable approach for short-term disease forecasting in high spatial resolution areal data"_ [(Orozco-Acosta et al., 2023)](https://arxiv.org/abs/2303.16549). Specifically, it contains several scripts organized in self-contained folders to reproduce the _Predictive validation study_ and _Illustration_ sections of the paper. Note that due to confidentiality issues, simulated data sets are provided and then, results are not fully reproducible.
+This repository contains the R code to reproduce the analyses presented in the paper entitled _"A scalable approach for short-term disease forecasting in high spatial resolution areal data"_ [(Orozco-Acosta et al., 2023)](https://arxiv.org/abs/2303.16549). Specifically, it contains several scripts to reproduce the **_Predictive validation study_** and **_Illustration_** sections of the paper. Note that due to confidentiality issues, simulated data sets are provided, and hence, results are not fully reproducible.
 
 Model fitting is performed using the `STCAR_INLA()` function of the R package [**bigDM**](https://cran.r-project.org/web/packages/bigDM/index.html). The package also includes several univariate and multivariate spatial and spatio-temporal Bayesian models for high-dimensional areal count data based on the integrated nested Laplace approximation (INLA) estimation technique (http://www.r-inla.org/).
 
@@ -19,7 +19,7 @@ See [https://github.com/spatialstatisticsupna/bigDM](https://github.com/spatials
 
 The proposed methodology is applied to project male lung cancer and overall cancer (all sites) mortality data in the 7907 municipalities of continental Spain by considering three-year ahead predictions using the period 1991-2012 as reference.
 
-Please, note that the data used in this paper are subject to confidentiality agreements with the Spanish Statistical Office (INE), as we analyze cancer mortality data at the municipal level in Spain (NUTS4 level from the European nomenclature of territorial units for statistics).
+Please, note that data used in this paper are subject to confidentiality agreements with the Spanish Statistical Office (INE), as we analyze cancer mortality data at the municipal level in Spain (NUTS4 level from the European nomenclature of territorial units for statistics).
 
 However, we provide a simulated data of male lung cancer mortality counts, which have been modified in order to preserve the confidentiality of the original data. The data can be directly loaded in R through our package **bigDM** by using the command
 ```r
@@ -45,7 +45,7 @@ The `Data_LungCancer` object contains the following variables:
 - ```pop```: population at risk
 
 
-Similarly, an Rdata containing simulated data of male overall cancer mortality counts can be loaded as:
+Similarly, an `.Rdata` file containing simulated data of male overall cancer mortality counts can be loaded as:
 ```r
 > load("./Data/Data_OverallCancer.Rdata")
 
@@ -62,11 +62,11 @@ Similarly, an Rdata containing simulated data of male overall cancer mortality c
 
 ## R code
 
-The code of this paper is organized in self-contained folders, which are named according to the corresponding sections of the paper.
+The [R code](./Rcode/) of this repository is organized according to the corresponding sections of the paper.
 
-### [**Section 4. Predictive validation study**](./Rcode/Section4_PredictiveValidationStudy)
+### Section 4 - Predictive validation study
 
-The script [Validation_study.R](./Rcode/Section4_PredictiveValidationStudy/Validation_study.R) enables the replication of the predictive validation study presented in Section 4 of the paper using simulated data for male lung cancer mortality counts. At the end, similar results to those presented in Table 2, Table A1 and Table A2 will be obtained.
+The script [Section4_PredictiveValidationStudy.R](./Rcode/Section4_PredictiveValidationStudy.R) enables the replication of the predictive validation study presented in Section 4 of Orozco-Acosta et al. (2023) using simulated data for male lung cancer mortality counts. Similar results to those presented in Table 2, Table A1 and Table A2 will be obtained.
 
 The script is structured in four main steps:
 
@@ -90,33 +90,18 @@ The script is structured in four main steps:
    
     R code to reproduce Figure 2: *One, two and three-year ahead predictions for the municipalities of Madrid, Palencia and Ávila using the disjoint model (left column) and 1st-order neighbourhood model (right column) with Type IV interactions.*
 
-### [**Section 5. Illustration: projections of cancer mortality in Spain**](https://github.com/spatialstatisticsupna/Scalable_Prediction/tree/main/R/Section5_Illustration)
+### Section 5 - Illustration: projections of cancer mortality in Spain
 
-- [**Fit_models.R**](https://github.com/spatialstatisticsupna/Scalable_Prediction/tree/main/R/Section5_Illustration/Fit_models.R)
-
-  This R script contains the necessary functions to replicate the fit of spatio-temporal *classical* and *partition* models considered in the illustration section of Orozco-Acosta et al. (2023) using the [bigDM](https://github.com/spatialstatisticsupna/bigDM) package. The code can be used with any other data sets with similar structure.
+The script [Section5_FitModels.R](./Rcode/Section5_FitModels.R) allows to replicate the fit of spatio-temporal *classical* and *partition* models describedn in the illustration section of Orozco-Acosta et al. (2023) using the [bigDM](https://github.com/spatialstatisticsupna/bigDM) package. The code can be used with any other data sets with similar structure.
   
   It also computes the Logarithmic Score (based on both LOOCV and LGOCV approaches) and model selection criteria (DIC and WAIC) to reproduce the results shown in **Table 3**.
   
   **IMPORTANT NOTE**: In order to compute Logarithmic Score measures under the partition models (Disjoint or k-order neighbourhood models) the sub-models must be previously saved by setting the argument `STCAR_INLA(..., save.models=TRUE)`.
 
 
-- [**LungCancer_Results.R**](https://github.com/spatialstatisticsupna/Scalable_Prediction/tree/main/R/Section5_Illustration/LungCancer_Results.R)
+### Auxiliary functions
 
-  R code that contains the necessary functions to replicate the figures and tables of Section 5.1 (*Lung cancer mortality*). Note that slightly different results are obtained since we are using simulated counts to preserve the confidentiality of the original data. The final model (1st-order neighbourhood + Type IV interaction) fitted using INLA can be downloaded from [https://emi-sstcdapp.unavarra.es/bigDM/inst/Rdata/INLAmodel_LungCancer.Rdata](https://emi-sstcdapp.unavarra.es/bigDM/inst/Rdata/INLAmodel_LungCancer.Rdata).
-  
-  - **Figure 3a:** Maps of posterior median estimates of lung cancer mortality rates per 100,000 males
-  - **Figure 4a:** Posterior predictive median estimates of lung cancer mortality rates and its corresponding 95% credible intervals per 100,000 males for the municipalities of Gerona, Madrid and Bilbao.
-  - **Table 4:** Posterior median estimates of the predicted lung cancer mortality rates per 100,000 males, its corresponding 95% credible intervals (CI) and width of the CIS for years 2013 and 2015 for the 47 municipalities that form the provincial capitals.
-  
-
-- [**OverallCancer_Results.R**](https://github.com/spatialstatisticsupna/Scalable_Prediction/tree/main/R/Section5_Illustration/OverallCancer_Results.R)
-
-  R code that contains the necessary functions to replicate the figures and tables of Section 5.2 (*Overall cancer mortality*). Note that slightly different results are obtained since we are using simulated counts to preserve the confidentiality of the original data. The final model (1st-order neighbourhood + Type IV interaction) fitted using INLA can be downloaded from [https://emi-sstcdapp.unavarra.es/bigDM/inst/Rdata/INLAmodel_OverallCancer.Rdata](https://emi-sstcdapp.unavarra.es/bigDM/inst/Rdata/INLAmodel_OverallCancer.Rdata).
-  
-  - **Figure 3b:** Posterior median estimates of overall cancer mortality rates per 100,000 males
-  - **Figure 4a:** Posterior predictive median estimates of overall cancer mortality rates and its corresponding 95% credible intervals per 100,000 males for the municipalities of Gerona, Madrid and Bilbao.
-  - **Table 5:** Posterior median estimates of the predicted overall cancer mortality rates per 100,000 males, its corresponding 95% credible intervals (CI) and width of the CIS for years 2013 and 2015 for the 47 municipalities that form the provincial capitals.
+The script [Auxiliary_functions.R](./Rcode/Auxiliary_functions.R) contains several additional functions to perform the analyses described in the paper, so that the results are reproducible when using an alternative (but similarly structured) data.
 
 
 ### R and R packages. Version info
