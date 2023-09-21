@@ -92,12 +92,15 @@ The script is structured in four main steps:
 
 ### Section 5 - Illustration: projections of cancer mortality in Spain
 
-The script [Section5_FitModels.R](./Rcode/Section5_FitModels.R) allows to replicate the fit of spatio-temporal *classical* and *partition* models described in the illustration section of Orozco-Acosta et al. (2023) using the [bigDM](https://github.com/spatialstatisticsupna/bigDM) package. The code can be used with any other data sets with similar structure. It also computes the Logarithmic Score (based on both LOOCV and LGOCV approaches) and model selection criteria as DIC and WAIC.
+- The script [Section5_FitModels.R](./Rcode/Section5_FitModels.R) allows to replicate the fit of spatio-temporal *classical* and *partition* models described in the illustration section of Orozco-Acosta et al. (2023) using the [bigDM](https://github.com/spatialstatisticsupna/bigDM) package. The code can be used with any other data sets with similar structure. It also computes the Logarithmic Score (based on both LOOCV and LGOCV approaches) and model selection criteria as DIC and WAIC.
 
-To reproduce the results shown in **Table 3**, all the models must be previously fitted following the code described in the script. To compute the Logarithmic Score measures for the partition models (i.e., *Disjoint* and *1st-order neighbourhood* models) their corresponding sub-models must be also saved by setting the argument `STCAR_INLA(..., save.models=TRUE)`. Please, note that this function will automatically create a "temp" folder in the current working directory.
+    To reproduce the results shown in **Table 3**, all the models must be previously fitted following the code described in the script. To compute the Logarithmic Score measures for the partition models (i.e., *Disjoint* and *1st-order neighbourhood* models) their corresponding sub-models must be also saved by setting the argument `STCAR_INLA(..., save.models=TRUE)`. Please, note that this function will automatically create a "temp" folder in the current working directory.
 
-**CAUTION!** These computations are very time consuming (several hours) and generate rather large `.Rdata` files (several Gb) for each of the models.
+    **CAUTION!** These computations are very time consuming (several hours) and generate rather large `.Rdata` files (several Gb) for each of the models.
 
+- The script [Section5_Figures_and_Tables.R](./Rcode/Section5_Figures_and_Tables.R) contains the necessary functions to replicate the figures and tables of Section 5.1 (*Lung cancer mortality*) and Section 5.2 (*Overall cancer mortality*). Note that slightly different results are obtained since we are using simulated counts to preserve the confidentiality of the original data.
+
+    In order to avoid fitting the models (see [Section5_FitModels.R](./Rcode/Section5_FitModels.R) for details), the final INLA models (1st-order neighbourhood + Type IV interaction) can be downloaded from [https://emi-sstcdapp.unavarra.es/bigDM/inst/Rdata/](https://emi-sstcdapp.unavarra.es/bigDM/inst/Rdata/).
 
 ### Auxiliary functions
 
