@@ -181,20 +181,13 @@ source("Auxiliary_functions.R")
 
 count.pred <- lapply(models.INLA[[interaction]], function(x) compute.pred(x, ID.area=c("28079","34120","05019")))
 
-rate.pred <- lapply(names(count.pred), function(i){
-  x <- Data_pred[[i]]
-  y <- count.pred[[i]]
+rate.pred <- lapply(count.pred, function(x){
+  x$rate_true <- x$obs_true/x$E*1e+5
+  x$rate_pred <- x$obs_pred/x$E*1e+5
+  x$`rate_q0.025` <- x$quant0.025/x$E*1e+5
+  x$`rate_q0.975` <- x$quant0.975/x$E*1e+5
   
-  ID.x <- paste(x$ID,x$year,sep=".")
-  ID.y <- paste(y$Area,y$Year,sep=".")
-  
-  aux <- x[ID.x %in% ID.y,]
-  y$rate_true <- y$obs_true/aux$pop*1e+5
-  y$rate_pred <- y$obs_pred/aux$pop*1e+5
-  y$`rate_q0.025` <- y$quant0.025/aux$pop*1e+5
-  y$`rate_q0.975` <- y$quant0.975/aux$pop*1e+5
-  
-  return(y)
+  return(x)
 })
 rate.pred <- do.call(rbind,rate.pred)
 rate.pred <- split(rate.pred, rate.pred$Area)
