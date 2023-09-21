@@ -84,7 +84,7 @@ The script is structured in four main steps:
 
     After fitting the models for each configuration, several measures (MAE - mean absolute error, RMSE - root mean square error, IS - interval score) are computed to assess their predictive performance. The results will reproduce similar values to those presented in Table 2, as well as Tables A1 and A2 of the Appendix section. The results are stored in the `results/` folder.
   
-    Please, note that these computations are very time consuming in Windows OS.
+    **CAUTION!** These computations might be very time consuming in Windows OS.
 
 4. **Compute Figure 2**
    
@@ -92,11 +92,11 @@ The script is structured in four main steps:
 
 ### Section 5 - Illustration: projections of cancer mortality in Spain
 
-The script [Section5_FitModels.R](./Rcode/Section5_FitModels.R) allows to replicate the fit of spatio-temporal *classical* and *partition* models describedn in the illustration section of Orozco-Acosta et al. (2023) using the [bigDM](https://github.com/spatialstatisticsupna/bigDM) package. The code can be used with any other data sets with similar structure.
-  
-  It also computes the Logarithmic Score (based on both LOOCV and LGOCV approaches) and model selection criteria (DIC and WAIC) to reproduce the results shown in **Table 3**.
-  
-  **IMPORTANT NOTE**: In order to compute Logarithmic Score measures under the partition models (Disjoint or k-order neighbourhood models) the sub-models must be previously saved by setting the argument `STCAR_INLA(..., save.models=TRUE)`. This action will save a rather large `.Rdata` file (several Gb) for each of the models.
+The script [Section5_FitModels.R](./Rcode/Section5_FitModels.R) allows to replicate the fit of spatio-temporal *classical* and *partition* models described in the illustration section of Orozco-Acosta et al. (2023) using the [bigDM](https://github.com/spatialstatisticsupna/bigDM) package. The code can be used with any other data sets with similar structure. It also computes the Logarithmic Score (based on both LOOCV and LGOCV approaches) and model selection criteria as DIC and WAIC.
+
+To reproduce the results shown in **Table 3**, all the models must be previously fitted following the code described in the script. To compute the Logarithmic Score measures for the partition models (i.e., *Disjoint* and *1st-order neighbourhood* models) their corresponding sub-models must be also saved by setting the argument `STCAR_INLA(..., save.models=TRUE)`. Please, note that this function will automatically create a "temp" folder in the current working directory.
+
+**CAUTION!** These computations are very time consuming (several hours) and generate rather large `.Rdata` files (several Gb) for each of the models.
 
 
 ### Auxiliary functions
