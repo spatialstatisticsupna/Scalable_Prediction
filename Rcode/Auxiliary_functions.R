@@ -22,7 +22,7 @@ compute.pred <- function(res, ns=5000, ID.area=NULL){
   if(is.null(ID.area)) ID.area <- unique(res$data$Area)
   
   loc_pred <- which(is.na(res$data$O) & (res$data$Area %in% ID.area))
-  aux <- res$data[loc_pred,c("Area","Year","obs_true")]
+  aux <- res$data[loc_pred,c("Area","Year","E","obs_true")]
   aux$period <- rep(c("1-year ahead","2-year ahead","3-year ahead"), each=length(unique(aux$Area)))
   
   if(Sys.info()[1]=="Windows"){
