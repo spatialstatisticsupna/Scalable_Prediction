@@ -96,7 +96,7 @@ The script [Section5_FitModels.R](./Rcode/Section5_FitModels.R) allows to replic
   
   It also computes the Logarithmic Score (based on both LOOCV and LGOCV approaches) and model selection criteria (DIC and WAIC) to reproduce the results shown in **Table 3**.
   
-  **IMPORTANT NOTE**: In order to compute Logarithmic Score measures under the partition models (Disjoint or k-order neighbourhood models) the sub-models must be previously saved by setting the argument `STCAR_INLA(..., save.models=TRUE)`.
+  **IMPORTANT NOTE**: In order to compute Logarithmic Score measures under the partition models (Disjoint or k-order neighbourhood models) the sub-models must be previously saved by setting the argument `STCAR_INLA(..., save.models=TRUE)`. This action will save a rather large `.Rdata` file (several Gb) for each of the models.
 
 
 ### Auxiliary functions

@@ -6,6 +6,7 @@
 # devtools::install_github("spatialstatisticsupna/bigDM")
 library(bigDM)
 library(ggplot2)
+library(ggpubr)
 library(INLA)
 library(parallel)
 library(sf)
@@ -97,14 +98,14 @@ for(i in seq(1,8)){
                                           cpu.used=res$cpu.used)
 }
 
-# save(models.INLA, file=paste0("ValidationStudy_",model,".Rdata"))
+# save(models.INLA, file=paste0("../results/ValidationStudy_",model,".Rdata"))
 
 
 ##########################################
 ## 3) Compute model assessment criteria ##
 ##########################################
-# load(paste0("ValidationStudy_",model,".Rdata"))
-source("../Auxiliary_functions.R")
+# load(paste0("../results/ValidationStudy_",model,".Rdata"))
+source("Auxiliary_functions.R")
 
 ## CAUTION: These computations are very time consuming in Windows OS!
 count.pred <- lapply(models.INLA[[interaction]], function(x) compute.pred(x))
@@ -170,12 +171,14 @@ print(TableA1)
 TableA2 <- lapply(table.columns, function(x) aux$`Table A2`[x,])
 print(TableA2)
 
-save(list=c("Table2","TableA1","TableA2"), file="../../results/ValidationStudy_Tables.Rdata")
+save(list=c("Table2","TableA1","TableA2"), file="../results/ValidationStudy_Tables.Rdata")
 
 
 #########################
 ## 4) Compute Figure 2 ##
 #########################
+source("Auxiliary_functions.R")
+
 count.pred <- lapply(models.INLA[[interaction]], function(x) compute.pred(x, ID.area=c("28079","34120","05019")))
 
 rate.pred <- lapply(names(count.pred), function(i){
@@ -208,4 +211,4 @@ Figure2c <- plot.Figure2(rate.pred$`05019`, title=paste(model,"model -",interact
 
 ## Save the plots ##
 ggarrange(Figure2a, Figure2b, Figure2c, nrow=3)
-ggsave(filename="../../results/Figure2.pdf", width=7.4, height=9)
+ggsave(filename="../results/ValidationStudy_Figure2.pdf", width=7.4, height=9)

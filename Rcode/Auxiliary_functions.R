@@ -103,6 +103,11 @@ plot.Figure2 <- function(aux, title=NULL){
 #' }
 #'
 CV <- function(x, m=3){
+  
+  sdunif="expression:
+          logdens=-log_precision/2;
+          return(logdens)"
+  
   x$.args$inla.call <- NULL
   
   LOOCV <- inla.group.cv(result=x, num.level.sets=-1)

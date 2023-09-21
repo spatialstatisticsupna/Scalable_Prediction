@@ -15,10 +15,10 @@ setwd(dirname(rstudioapi::getSourceEditorContext()$path))
 ######################################################################
 ## 1) Load male lung and overall cancer (all sites) mortality data  ##
 ######################################################################
-load("../../data/Data_LungCancer.Rdata")
+load("../data/Data_LungCancer.Rdata")
 str(Data_LungCancer)
 
-load("../../data/Data_OverallCancer.Rdata")
+load("../data/Data_OverallCancer.Rdata")
 str(Data_OverallCancer)
 
 
@@ -80,12 +80,19 @@ workers <- future::availableWorkers()[-1]
 type <- list(TypeI="TypeI", TypeII="TypeII", TypeIII="TypeIII", TypeIV="TypeIV")
 
 MODELS.k0 <- lapply(type, function(x){
-  bigDM::STCAR_INLA(carto=Carto_SpainMUN, data=data, ID.group="ID.prov",
+  res <- STCAR_INLA(carto=Carto_SpainMUN, data=data, ID.group="ID.prov",
                     ID.area="ID", ID.year="year", O="obs", E="pop",
                     spatial="BYM2", temporal="rw1", interaction=x,
                     model="partition", k=0, compute.fitted.values=TRUE,
                     inla.mode=inla.mode, plan="cluster", workers=workers,
                     save.models=TRUE)
+  
+  aux <- file.info(list.files(paste0(getwd(),"/temp"), full.names=T))
+  filename.old <- rownames(aux)[order(aux$mtime, decreasing=T)[1]]
+  filename.new <- paste0(getwd(),"/temp/INLAsubmodels_k0_",x,".Rdata")
+  file.rename(filename.old, filename.new)
+  
+  return(res)
 })
 
 
@@ -96,23 +103,26 @@ workers <- future::availableWorkers()[-1]
 type <- list(TypeI="TypeI", TypeII="TypeII", TypeIII="TypeIII", TypeIV="TypeIV")
 
 MODELS.k1 <- lapply(type, function(x){
-  bigDM::STCAR_INLA(carto=Carto_SpainMUN, data=data, ID.group="ID.prov",
+  res <- STCAR_INLA(carto=Carto_SpainMUN, data=data, ID.group="ID.prov",
                     ID.area="ID", ID.year="year", O="obs", E="pop",
                     spatial="BYM2", temporal="rw1", interaction=x,
                     model="partition", k=1, compute.fitted.values=TRUE,
                     inla.mode=inla.mode, plan="cluster", workers=workers,
                     save.models=TRUE)
+  
+  aux <- file.info(list.files(paste0(getwd(),"/temp"), full.names=T))
+  filename.old <- rownames(aux)[order(aux$mtime, decreasing=T)[1]]
+  filename.new <- paste0(getwd(),"/temp/INLAsubmodels_k1_",x,".Rdata")
+  file.rename(filename.old, filename.new)
+  
+  return(res)
 })
 
 
 ########################
 ## 4) Compute Table 3 ##
 ########################
-source("../Auxiliary_functions.R")
-
-sdunif="expression:
-          logdens=-log_precision/2;
-          return(logdens)"
+source("Auxiliary_functions.R")
 
 
 ## CAUTION: These computations are very time consuming! ##
@@ -137,58 +147,59 @@ Table3a
 ## Disjoint models 
 ###################
 Table3b <- data.frame(LOOCV=rep(NA,4), LGOCV=rep(NA,4),
-                      row.names=paste("k0_type",c("I","II","III","IV"),sep=""))
+                      row.names=paste("k0_Type",c("I","II","III","IV"),sep=""))
 
 ## k0 - TypeI ##
-load("temp/INLAsubmodels_k0_typeI.Rdata")
+load("temp/INLAsubmodels_k0_TypeI.Rdata")
 aux <- lapply(inla.models, CV)
 rm(inla.models)
 gc()
 
-k0_typeI <- lapply(aux, function(x){
+k0_TypeI <- lapply(aux, function(x){
   data.frame(LOOCV=-sum(log(x$LOOCV$cv),na.rm=T),
              LGOCV=-sum(log(x$LGOCV$cv),na.rm=T))
 })
-Table3b["k0_typeI",] <- apply(do.call(rbind,k0_typeI),2,sum)
+Table3b["k0_TypeI",] <- apply(do.call(rbind,k0_TypeI),2,sum)
+
 
 
 ## k0 - TypeII ##
-load("temp/INLAsubmodels_k0_typeII.Rdata")
+load("temp/INLAsubmodels_k0_TypeII.Rdata")
 aux <- lapply(inla.models, CV)
 rm(inla.models)
 gc()
 
-k0_typeII <- lapply(aux, function(x){
+k0_TypeII <- lapply(aux, function(x){
   data.frame(LOOCV=-sum(log(x$LOOCV$cv),na.rm=T),
              LGOCV=-sum(log(x$LGOCV$cv),na.rm=T))
 })
-Table3b["k0_typeII",] <- apply(do.call(rbind,k0_typeII),2,sum)
+Table3b["k0_TypeII",] <- apply(do.call(rbind,k0_TypeII),2,sum)
 
 
 ## k0 - TypeIII ##
-load("temp/INLAsubmodels_k0_typeIII.Rdata")
+load("temp/INLAsubmodels_k0_TypeIII.Rdata")
 aux <- lapply(inla.models, CV)
 rm(inla.models)
 gc()
 
-k0_typeIII <- lapply(aux, function(x){
+k0_TypeIII <- lapply(aux, function(x){
   data.frame(LOOCV=-sum(log(x$LOOCV$cv),na.rm=T),
              LGOCV=-sum(log(x$LGOCV$cv),na.rm=T))
 })
-Table3b["k0_typeIII",] <- apply(do.call(rbind,k0_typeIII),2,sum)
+Table3b["k0_TypeIII",] <- apply(do.call(rbind,k0_TypeIII),2,sum)
 
 
 ## k0 - TypeIV ##
-load("temp/INLAsubmodels_k0_typeIV.Rdata")
+load("temp/INLAsubmodels_k0_TypeIV.Rdata")
 aux <- lapply(inla.models, CV)
 rm(inla.models)
 gc()
 
-k0_typeIV <- lapply(aux, function(x){
+k0_TypeIV <- lapply(aux, function(x){
   data.frame(LOOCV=-sum(log(x$LOOCV$cv),na.rm=T),
              LGOCV=-sum(log(x$LGOCV$cv),na.rm=T))
 })
-Table3b["k0_typeIV",] <- apply(do.call(rbind,k0_typeIV),2,sum)
+Table3b["k0_TypeIV",] <- apply(do.call(rbind,k0_TypeIV),2,sum)
 
 
 ## DIC/WAIC values ##
@@ -201,7 +212,7 @@ Table3b
 ## 1st-order neighbourhood models 
 ##################################
 Table3c<- data.frame(LOOCV=rep(NA,4), LGOCV=rep(NA,4),
-                     row.names=paste("k1_type",c("I","II","III","IV"),sep=""))
+                     row.names=paste("k1_Type",c("I","II","III","IV"),sep=""))
 
 data("Carto_SpainMUN")
 Carto_SpainMUN$ID.prov <- substr(Carto_SpainMUN$ID, 1, 2)
@@ -209,63 +220,63 @@ ID.list <- lapply(unique(Carto_SpainMUN$ID.prov), function(x) Carto_SpainMUN[Car
 
 
 ## k1 - TypeI ##
-load("temp/INLAsubmodels_k1_typeI.Rdata")
+load("temp/INLAsubmodels_k1_TypeI.Rdata")
 aux <- lapply(inla.models, CV)
 rm(inla.models)
 gc()
 
-k1_typeI <- mapply(function(x,y){
+k1_TypeI <- mapply(function(x,y){
   pos <- which(x$data$Area %in% y)
   data.frame(LOOCV=-sum(log(x$LOOCV$cv[pos]),na.rm=T),
              LGOCV=-sum(log(x$LGOCV$cv[pos]),na.rm=T))
 }, x=aux, y=ID.list, SIMPLIFY=F)
 
-Table3c["k1_typeI",] <- apply(do.call(rbind,k1_typeI),2,sum)
+Table3c["k1_TypeI",] <- apply(do.call(rbind,k1_TypeI),2,sum)
 
 
 ## k1 - TypeII ##
-load("temp/INLAsubmodels_k1_typeI.Rdata")
+load("temp/INLAsubmodels_k1_TypeII.Rdata")
 aux <- lapply(inla.models, CV)
 rm(inla.models)
 gc()
 
-k1_typeII <- mapply(function(x,y){
+k1_TypeII <- mapply(function(x,y){
   pos <- which(x$data$Area %in% y)
   data.frame(LOOCV=-sum(log(x$LOOCV$cv[pos]),na.rm=T),
              LGOCV=-sum(log(x$LGOCV$cv[pos]),na.rm=T))
 }, x=aux, y=ID.list, SIMPLIFY=F)
 
-Table3c["k1_typeII",] <- apply(do.call(rbind,k1_typeII),2,sum)
+Table3c["k1_TypeII",] <- apply(do.call(rbind,k1_TypeII),2,sum)
 
 
 ## k1 - TypeIII ##
-load("temp/INLAsubmodels_k1_typeI.Rdata")
+load("temp/INLAsubmodels_k1_TypeIII.Rdata")
 aux <- lapply(inla.models, CV)
 rm(inla.models)
 gc()
 
-k1_typeIII <- mapply(function(x,y){
+k1_TypeIII <- mapply(function(x,y){
   pos <- which(x$data$Area %in% y)
   data.frame(LOOCV=-sum(log(x$LOOCV$cv[pos]),na.rm=T),
              LGOCV=-sum(log(x$LGOCV$cv[pos]),na.rm=T))
 }, x=aux, y=ID.list, SIMPLIFY=F)
 
-Table3c["k1_typeIII",] <- apply(do.call(rbind,k1_typeIII),2,sum)
+Table3c["k1_TypeIII",] <- apply(do.call(rbind,k1_TypeIII),2,sum)
 
 
 ## k1 - TypeIV ##
-load("temp/INLAsubmodels_k1_typeI.Rdata")
+load("temp/INLAsubmodels_k1_TypeIV.Rdata")
 aux <- lapply(inla.models, CV)
 rm(inla.models)
 gc()
 
-k1_typeIV <- mapply(function(x,y){
+k1_TypeIV <- mapply(function(x,y){
   pos <- which(x$data$Area %in% y)
   data.frame(LOOCV=-sum(log(x$LOOCV$cv[pos]),na.rm=T),
              LGOCV=-sum(log(x$LGOCV$cv[pos]),na.rm=T))
 }, x=aux, y=ID.list, SIMPLIFY=F)
 
-Table3c["k1_typeIV",] <- apply(do.call(rbind,k1_typeIV),2,sum)
+Table3c["k1_TypeIV",] <- apply(do.call(rbind,k1_TypeIV),2,sum)
 
 
 ## DIC/WAIC values ##
@@ -284,5 +295,6 @@ Table3$LGOCV <- round(Table3$LGOCV-min(Table3$LGOCV))
 Table3$DIC <- round(Table3$DIC-min(Table3$DIC))
 Table3$WAIC <- round(Table3$WAIC-min(Table3$WAIC))
 Table3$Time <- round(Table3$Time)
-
 print(Table3)
+
+save(Table3, file="../results/Illustration_Table3.Rdata")
