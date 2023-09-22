@@ -173,16 +173,18 @@ loaded via a namespace (and not attached):
 [106] tidyr_1.3.0        munsell_0.5.0      viridisLite_0.4.0
 ```
 
+# GitHub repository
+
+The content of these folders are also available in the following GitHub repository: <https://github.com/spatialstatisticsupna/Scalable_Prediction>
+
 
 # Acknowledgements
 
 This research has been supported by the project PID2020-113125RBI00/MCIN/AEI/10.13039/501100011033.
 
-![image](https://github.com/spatialstatisticsupna/Scalable_Prediction/blob/main/micin-aei.jpg)
+![](./micin-aei.jpg)
 
 
 # References
 
-[Liu, Z., and Rue, H. (2022). Leave-Group-Out Cross-Validation For Latent Gaussian Models. _arXiv preprint_.](https://doi.org/10.48550/arXiv.2210.04482)
-
-[Orozco-Acosta, E., Riebler, A., Adin, A., and Ugarte, M.D. (2023). A scalable approach for short-term disease forecasting in high spatial resolution areal data. _arXiv preprint_.](https://arxiv.org/abs/2303.16549)
+[Orozco-Acosta, E., Riebler, A., Adin, A., and Ugarte, M.D. (2023). A scalable approach for short-term disease forecasting in high spatial resolution areal data. *Biometrical Journal (accepted)*](https://arxiv.org/abs/2303.16549)
