@@ -11,8 +11,6 @@ keep-md: true
 editor: visual
 ---
 
-
-
 This repository contains the R code to reproduce the analyses presented in the paper entitled *"A scalable approach for short-term disease forecasting in high spatial resolution areal data"* [(Orozco-Acosta et al., 2023)](https://arxiv.org/abs/2303.16549). Specifically, it contains several scripts to reproduce the ***Predictive validation study*** and ***Illustration*** sections of the paper. Note that due to confidentiality issues, simulated data sets are provided, and hence, results are not fully reproducible.
 
 Model fitting is performed using the `STCAR_INLA()` function of the R package [**bigDM**](https://cran.r-project.org/web/packages/bigDM/index.html). The package also includes several univariate and multivariate spatial and spatio-temporal Bayesian models for high-dimensional areal count data based on the integrated nested Laplace approximation (INLA) estimation technique (http://www.r-inla.org/).
@@ -113,10 +111,7 @@ The script [Auxiliary_functions.R](./Rcode/Auxiliary_functions.R) contains sever
 
 ### R and R packages. Version info
 
-
-::: {.cell}
-
-```{.r .cell-code}
+```{r eval=FALSE, include=TRUE}
 R version 4.2.0 (2022-04-22)
 Platform: x86_64-pc-linux-gnu (64-bit)
 Running under: CentOS Linux 7 (Core)
@@ -180,8 +175,6 @@ loaded via a namespace (and not attached):
 [103] data.table_1.14.2  digest_0.6.29      classInt_0.4-3
 [106] tidyr_1.3.0        munsell_0.5.0      viridisLite_0.4.0
 ```
-:::
-
 
 # GitHub repository
 

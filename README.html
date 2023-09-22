@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.450">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Orozco-Acosta, E., Riebler, A., Adin, A., and Ugarte, M.D.">
+
+<title>A scalable approach for short-term disease forecasting in high spatial resolution areal data</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="README_files/libs/clipboard/clipboard.min.js"></script>
+<script src="README_files/libs/quarto-html/quarto.js"></script>
+<script src="README_files/libs/quarto-html/popper.min.js"></script>
+<script src="README_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="README_files/libs/quarto-html/anchor.min.js"></script>
+<link href="README_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="README_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="README_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="README_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="README_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+</head>
+
+<body>
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#table-of-contents" id="toc-table-of-contents" class="nav-link active" data-scroll-target="#table-of-contents">Table of contents</a></li>
+  <li><a href="#data" id="toc-data" class="nav-link" data-scroll-target="#data">Data</a></li>
+  <li><a href="#r-code" id="toc-r-code" class="nav-link" data-scroll-target="#r-code">R code</a>
+  <ul class="collapse">
+  <li><a href="#section-4---predictive-validation-study" id="toc-section-4---predictive-validation-study" class="nav-link" data-scroll-target="#section-4---predictive-validation-study">Section 4 - Predictive validation study</a></li>
+  <li><a href="#section-5---illustration-projections-of-cancer-mortality-in-spain" id="toc-section-5---illustration-projections-of-cancer-mortality-in-spain" class="nav-link" data-scroll-target="#section-5---illustration-projections-of-cancer-mortality-in-spain">Section 5 - Illustration: projections of cancer mortality in Spain</a></li>
+  <li><a href="#auxiliary-functions" id="toc-auxiliary-functions" class="nav-link" data-scroll-target="#auxiliary-functions">Auxiliary functions</a></li>
+  <li><a href="#r-and-r-packages.-version-info" id="toc-r-and-r-packages.-version-info" class="nav-link" data-scroll-target="#r-and-r-packages.-version-info">R and R packages. Version info</a></li>
+  </ul></li>
+  <li><a href="#github-repository" id="toc-github-repository" class="nav-link" data-scroll-target="#github-repository">GitHub repository</a></li>
+  <li><a href="#acknowledgements" id="toc-acknowledgements" class="nav-link" data-scroll-target="#acknowledgements">Acknowledgements</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
+  </ul>
+</nav>
+</div>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">A scalable approach for short-term disease forecasting in high spatial resolution areal data</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Orozco-Acosta, E., Riebler, A., Adin, A., and Ugarte, M.D. </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">September, 2023</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+</header>
+
+<p>This repository contains the R code to reproduce the analyses presented in the paper entitled <em>“A scalable approach for short-term disease forecasting in high spatial resolution areal data”</em> <a href="https://arxiv.org/abs/2303.16549">(Orozco-Acosta et al., 2023)</a>. Specifically, it contains several scripts to reproduce the <strong><em>Predictive validation study</em></strong> and <strong><em>Illustration</em></strong> sections of the paper. Note that due to confidentiality issues, simulated data sets are provided, and hence, results are not fully reproducible.</p>
+<p>Model fitting is performed using the <code>STCAR_INLA()</code> function of the R package <a href="https://cran.r-project.org/web/packages/bigDM/index.html"><strong>bigDM</strong></a>. The package also includes several univariate and multivariate spatial and spatio-temporal Bayesian models for high-dimensional areal count data based on the integrated nested Laplace approximation (INLA) estimation technique (http://www.r-inla.org/).</p>
+<p>See <a href="https://github.com/spatialstatisticsupna/bigDM" class="uri">https://github.com/spatialstatisticsupna/bigDM</a> for details about installation and access to the vignettes accompanying this package.</p>
+<section id="table-of-contents" class="level2">
+<h2 class="anchored" data-anchor-id="table-of-contents">Table of contents</h2>
+<ul>
+<li><a href="#Data">Data</a></li>
+<li><a href="#R-code">R code</a></li>
+<li><a href="#Acknowledgements">Acknowledgements</a></li>
+<li><a href="#References">References</a></li>
+</ul>
+</section>
+<section id="data" class="level2">
+<h2 class="anchored" data-anchor-id="data">Data</h2>
+<p>The proposed methodology is applied to project male lung cancer and overall cancer (all sites) mortality data in the 7907 municipalities of continental Spain by considering three-year ahead predictions using the period 1991-2012 as reference.</p>
+<p>Please, note that data used in this paper are subject to confidentiality agreements with the Spanish Statistical Office (INE), as we analyze cancer mortality data at the municipal level in Spain (NUTS4 level from the European nomenclature of territorial units for statistics).</p>
+<p>However, we provide a simulated data of male lung cancer mortality counts, which have been modified in order to preserve the confidentiality of the original data. The data can be directly loaded in R through our package <strong>bigDM</strong> by using the command</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">library</span>(bigDM)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">data</span>(Data_LungCancer, <span class="at">package=</span><span class="st">"bigDM"</span>)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">head</span>(Data_LungCancer)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>     ID year obs        exp      SMR     pop</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="dv">01001</span> <span class="dv">1991</span>   <span class="dv">0</span> <span class="fl">0.27554975</span> <span class="fl">0.000000</span>  <span class="fl">483.77</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span> <span class="dv">01002</span> <span class="dv">1991</span>   <span class="dv">3</span> <span class="fl">2.72124997</span> <span class="fl">1.102435</span> <span class="fl">4948.98</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="dv">3</span> <span class="dv">01003</span> <span class="dv">1991</span>   <span class="dv">0</span> <span class="fl">0.49612295</span> <span class="fl">0.000000</span>  <span class="fl">667.91</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="dv">4</span> <span class="dv">01004</span> <span class="dv">1991</span>   <span class="dv">0</span> <span class="fl">0.37040942</span> <span class="fl">0.000000</span>  <span class="fl">591.11</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="dv">5</span> <span class="dv">01006</span> <span class="dv">1991</span>   <span class="dv">0</span> <span class="fl">0.06999827</span> <span class="fl">0.000000</span>   <span class="fl">62.81</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="dv">6</span> <span class="dv">01008</span> <span class="dv">1991</span>   <span class="dv">0</span> <span class="fl">0.29240328</span> <span class="fl">0.000000</span>  <span class="fl">354.80</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The <code>Data_LungCancer</code> object contains the following variables: - <code>ID</code>: character vector of geographic identifiers - <code>year</code>: numeric vector of years identifiers - <code>obs</code>: observed number of cases - <code>exp</code>: expected number of cases - <code>SMR</code>: standardized mortality ratios - <code>pop</code>: population at risk</p>
+<p>Similarly, an <code>.Rdata</code> file containing simulated data of male overall cancer mortality counts can be loaded as:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">load</span>(<span class="st">"./Data/Data_OverallCancer.Rdata"</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">head</span>(Data_OverallCancer)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>     ID year obs       exp       SMR     pop</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="dv">01001</span> <span class="dv">1991</span>   <span class="dv">1</span> <span class="fl">1.0125164</span> <span class="fl">0.9876384</span>  <span class="fl">483.77</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span> <span class="dv">01002</span> <span class="dv">1991</span>  <span class="dv">10</span> <span class="fl">9.8199947</span> <span class="fl">1.0183305</span> <span class="fl">4948.98</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="dv">3</span> <span class="dv">01003</span> <span class="dv">1991</span>   <span class="dv">1</span> <span class="fl">1.8756597</span> <span class="fl">0.5331458</span>  <span class="fl">667.91</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="dv">4</span> <span class="dv">01004</span> <span class="dv">1991</span>   <span class="dv">1</span> <span class="fl">1.4252320</span> <span class="fl">0.7016401</span>  <span class="fl">591.11</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="dv">5</span> <span class="dv">01006</span> <span class="dv">1991</span>   <span class="dv">0</span> <span class="fl">0.2518388</span> <span class="fl">0.0000000</span>   <span class="fl">62.81</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="dv">6</span> <span class="dv">01008</span> <span class="dv">1991</span>   <span class="dv">2</span> <span class="fl">1.0323942</span> <span class="fl">1.9372445</span>  <span class="fl">354.80</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="r-code" class="level2">
+<h2 class="anchored" data-anchor-id="r-code">R code</h2>
+<p>The <a href="./Rcode/">R code</a> of this repository is organized according to the corresponding sections of the paper.</p>
+<section id="section-4---predictive-validation-study" class="level3">
+<h3 class="anchored" data-anchor-id="section-4---predictive-validation-study">Section 4 - Predictive validation study</h3>
+<p>The script <a href="./Rcode/Section4_PredictiveValidationStudy.R">Section4_PredictiveValidationStudy.R</a> enables the replication of the predictive validation study presented in Section 4 of Orozco-Acosta et al.&nbsp;(2023) using simulated data for male lung cancer mortality counts. Similar results to those presented in Table 2, Table A1 and Table A2 will be obtained.</p>
+<p>The script is structured in four main steps:</p>
+<ol type="1">
+<li><p><strong>Generate the 8 validation configurations</strong></p>
+<p>As described in the paper, each configuration uses <span class="math inline">\(T=15\)</span> years of data to fit the model and predict at time points <span class="math inline">\(T+1\)</span>, <span class="math inline">\(T+2\)</span> and <span class="math inline">\(T+3\)</span>. The first configuration uses data from 1991 to 2005, the second configuration from 1992 to 2006, while the last configuration uses data from 1998 to 2012.</p></li>
+<li><p><strong>Fit the models with INLA using the <code>STCAR_INLA()</code> function</strong></p>
+<p>The script allows to select the model to be fitted using the <code>model</code> (one of either <code>"Classical"</code>, <code>"Disjoint"</code> or <code>"1st-order nb"</code>) and <code>interaction</code> (one of either <code>"TypeI"</code>, <code>"TypeII"</code>, <code>"TypeIII"</code> or <code>"TypeIV"</code>) arguments. Each combination of these arguments will reproduce a line of Table 2.</p>
+<p>Please, note that an alternative approximation strategy of INLA (not considered in the paper) has been set by default to speed up computations.</p></li>
+<li><p><strong>Compute model assessment criteria</strong></p>
+<p>After fitting the models for each configuration, several measures (MAE - mean absolute error, RMSE - root mean square error, IS - interval score) are computed to assess their predictive performance. The results will reproduce similar values to those presented in Table 2, as well as Tables A1 and A2 of the Appendix section. The results are stored in the <code>results/</code> folder.</p>
+<p><strong>CAUTION!</strong> These computations might be very time consuming in Windows OS.</p></li>
+<li><p><strong>Compute Figure 2</strong></p>
+<p>R code to reproduce Figure 2: <em>One, two and three-year ahead predictions for the municipalities of Madrid, Palencia and Ávila using the disjoint model (left column) and 1st-order neighbourhood model (right column) with Type IV interactions.</em></p></li>
+</ol>
+</section>
+<section id="section-5---illustration-projections-of-cancer-mortality-in-spain" class="level3">
+<h3 class="anchored" data-anchor-id="section-5---illustration-projections-of-cancer-mortality-in-spain">Section 5 - Illustration: projections of cancer mortality in Spain</h3>
+<ul>
+<li><p>The script <a href="./Rcode/Section5_FitModels.R">Section5_FitModels.R</a> allows to replicate the fit of spatio-temporal <em>classical</em> and <em>partition</em> models described in the illustration section of Orozco-Acosta et al.&nbsp;(2023) using the <a href="https://github.com/spatialstatisticsupna/bigDM">bigDM</a> package. The code can be used with any other data sets with similar structure. It also computes the Logarithmic Score (based on both LOOCV and LGOCV approaches) and model selection criteria as DIC and WAIC.</p>
+<p>To reproduce the results shown in <strong>Table 3</strong>, all the models must be previously fitted following the code described in the script. To compute the Logarithmic Score measures for the partition models (i.e., <em>Disjoint</em> and <em>1st-order neighbourhood</em> models) their corresponding sub-models must be also saved by setting the argument <code>STCAR_INLA(..., save.models=TRUE)</code>. Please, note that this function will automatically create a “temp” folder in the current working directory.</p>
+<p><strong>CAUTION!</strong> These computations are very time consuming (several hours) and generate rather large <code>.Rdata</code> files (several Gb) for each of the models.</p></li>
+<li><p>The script <a href="./Rcode/Section5_Figures_and_Tables.R">Section5_Figures_and_Tables.R</a> contains the necessary functions to replicate the figures and tables of Section 5.1 (<em>Lung cancer mortality</em>) and Section 5.2 (<em>Overall cancer mortality</em>). Note that slightly different results are obtained since we are using simulated counts to preserve the confidentiality of the original data.</p>
+<p>In order to avoid fitting the models (see <a href="./Rcode/Section5_FitModels.R">Section5_FitModels.R</a> for details), the final INLA models (1st-order neighbourhood + Type IV interaction) can be downloaded from <a href="https://emi-sstcdapp.unavarra.es/bigDM/inst/Rdata/" class="uri">https://emi-sstcdapp.unavarra.es/bigDM/inst/Rdata/</a>.</p></li>
+</ul>
+</section>
+<section id="auxiliary-functions" class="level3">
+<h3 class="anchored" data-anchor-id="auxiliary-functions">Auxiliary functions</h3>
+<p>The script <a href="./Rcode/Auxiliary_functions.R">Auxiliary_functions.R</a> contains several additional functions to perform the analyses described in the paper, so that the results are reproducible when using an alternative (but similarly structured) data.</p>
+</section>
+<section id="r-and-r-packages.-version-info" class="level3">
+<h3 class="anchored" data-anchor-id="r-and-r-packages.-version-info">R and R packages. Version info</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>R version <span class="dv">4</span>.<span class="fl">2.0</span> (<span class="dv">2022-04-22</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>Platform<span class="sc">:</span> x86_64<span class="sc">-</span>pc<span class="sc">-</span>linux<span class="sc">-</span><span class="fu">gnu</span> (<span class="dv">64</span><span class="sc">-</span>bit)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>Running under<span class="sc">:</span> CentOS Linux <span class="dv">7</span> (Core)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>Matrix products<span class="sc">:</span> default</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>BLAS<span class="sc">:</span>   <span class="er">/</span>users<span class="sc">/</span>r<span class="sc">/</span>R<span class="dv">-4</span>.<span class="fl">2.0</span><span class="sc">/</span>lib64<span class="sc">/</span>R<span class="sc">/</span>lib<span class="sc">/</span>libRblas.so</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>LAPACK<span class="sc">:</span> <span class="er">/</span>users<span class="sc">/</span>r<span class="sc">/</span>R<span class="dv">-4</span>.<span class="fl">2.0</span><span class="sc">/</span>lib64<span class="sc">/</span>R<span class="sc">/</span>lib<span class="sc">/</span>libRlapack.so</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>locale<span class="sc">:</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a> [<span class="dv">1</span>] LC_CTYPE<span class="ot">=</span>en_US.UTF<span class="dv">-8</span>       LC_NUMERIC<span class="ot">=</span>C</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a> [<span class="dv">3</span>] LC_TIME<span class="ot">=</span>en_US.UTF<span class="dv">-8</span>        LC_COLLATE<span class="ot">=</span>en_US.UTF<span class="dv">-8</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a> [<span class="dv">5</span>] LC_MONETARY<span class="ot">=</span>en_US.UTF<span class="dv">-8</span>    LC_MESSAGES<span class="ot">=</span>en_US.UTF<span class="dv">-8</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a> [<span class="dv">7</span>] LC_PAPER<span class="ot">=</span>en_US.UTF<span class="dv">-8</span>       LC_NAME<span class="ot">=</span>C</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a> [<span class="dv">9</span>] LC_ADDRESS<span class="ot">=</span>C               LC_TELEPHONE<span class="ot">=</span>C</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>[<span class="dv">11</span>] LC_MEASUREMENT<span class="ot">=</span>en_US.UTF<span class="dv">-8</span> LC_IDENTIFICATION<span class="ot">=</span>C</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>attached base packages<span class="sc">:</span></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] parallel  stats     graphics  grDevices utils     datasets  methods</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>[<span class="dv">8</span>] base</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>other attached packages<span class="sc">:</span></span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a> [<span class="dv">1</span>] ggpubr_0.<span class="fl">6.0</span>       ggplot2_3.<span class="fl">4.2</span>      tmap_3<span class="fl">.3</span><span class="dv">-3</span>         RColorBrewer_1<span class="fl">.1</span><span class="dv">-3</span></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a> [<span class="dv">5</span>] INLA_22.<span class="fl">12.16</span>      sp_2<span class="fl">.0</span><span class="dv">-0</span>           foreach_1.<span class="fl">5.2</span>      Matrix_1<span class="fl">.5</span><span class="dv">-4</span></span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a> [<span class="dv">9</span>] Hmisc_5<span class="fl">.1</span><span class="dv">-0</span>        bigDM_0.<span class="fl">5.1</span></span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>loaded via a <span class="fu">namespace</span> (and not attached)<span class="sc">:</span></span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>  [<span class="dv">1</span>] leafem_0.<span class="fl">2.0</span>       colorspace_2<span class="fl">.0</span><span class="dv">-3</span>   ggsignif_0.<span class="fl">6.4</span></span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>  [<span class="dv">4</span>] deldir_1<span class="fl">.0</span><span class="dv">-6</span>       class_7<span class="fl">.3</span><span class="dv">-20</span>       leaflet_2.<span class="fl">1.1</span></span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>  [<span class="dv">7</span>] htmlTable_2.<span class="fl">4.1</span>    base64enc_0<span class="fl">.1</span><span class="dv">-3</span>    dichromat_2<span class="fl">.0-0.1</span></span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a> [<span class="dv">10</span>] rstudioapi_0<span class="fl">.13</span>    proxy_0<span class="fl">.4</span><span class="dv">-26</span>       farver_2.<span class="fl">1.0</span></span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a> [<span class="dv">13</span>] listenv_0.<span class="fl">8.0</span>      fansi_1.<span class="fl">0.3</span>        codetools_0<span class="fl">.2</span><span class="dv">-18</span></span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a> [<span class="dv">16</span>] splines_4.<span class="fl">2.0</span>      doParallel_1.<span class="fl">0.17</span>  knitr_1<span class="fl">.39</span></span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a> [<span class="dv">19</span>] rlist_0.<span class="dv">4</span>.<span class="fl">6.2</span>      Formula_1<span class="fl">.2</span><span class="dv">-4</span>      tmaptools_3<span class="fl">.1</span><span class="dv">-1</span></span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a> [<span class="dv">22</span>] broom_1.<span class="fl">0.5</span>        cluster_2.<span class="fl">1.3</span>      png_0<span class="fl">.1</span><span class="dv">-8</span></span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a> [<span class="dv">25</span>] compiler_4.<span class="fl">2.0</span>     backports_1.<span class="fl">4.1</span>    fastmap_1.<span class="fl">1.0</span></span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a> [<span class="dv">28</span>] cli_3.<span class="fl">6.1</span>          s2_1.<span class="fl">1.4</span>           htmltools_0.<span class="fl">5.2</span></span>
+<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a> [<span class="dv">31</span>] tools_4.<span class="fl">2.0</span>        coda_0<span class="fl">.19</span><span class="dv">-4</span>        gtable_0.<span class="fl">3.0</span></span>
+<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a> [<span class="dv">34</span>] glue_1.<span class="fl">6.2</span>         dplyr_1.<span class="fl">1.2</span>        wk_0.<span class="fl">6.0</span></span>
+<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a> [<span class="dv">37</span>] gmodels_2.<span class="dv">18</span>.<span class="fl">1.1</span>   Rcpp_1.<span class="dv">0</span>.<span class="fl">8.3</span>       carData_3<span class="fl">.0</span><span class="dv">-5</span></span>
+<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a> [<span class="dv">40</span>] raster_3<span class="fl">.5</span><span class="dv">-15</span>      vctrs_0.<span class="fl">6.3</span>        spdep_1<span class="fl">.2</span><span class="dv">-4</span></span>
+<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a> [<span class="dv">43</span>] gdata_2.<span class="dv">18</span>.<span class="fl">0.1</span>     nlme_3<span class="fl">.1</span><span class="dv">-157</span>       iterators_1.<span class="fl">0.14</span></span>
+<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a> [<span class="dv">46</span>] leafsync_0.<span class="fl">1.0</span>     crosstalk_1.<span class="fl">2.0</span>    lwgeom_0<span class="fl">.2</span><span class="dv">-13</span></span>
+<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a> [<span class="dv">49</span>] xfun_0<span class="fl">.31</span>          stringr_1.<span class="fl">5.0</span>      globals_0.<span class="fl">15.0</span></span>
+<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a> [<span class="dv">52</span>] rbibutils_2.<span class="fl">2.8</span>    lifecycle_1.<span class="fl">0.3</span>    gtools_3.<span class="dv">9</span>.<span class="fl">2.1</span></span>
+<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a> [<span class="dv">55</span>] rstatix_0.<span class="fl">7.2</span>      XML_3<span class="fl">.99-0.10</span>      future_1.<span class="fl">26.1</span></span>
+<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a> [<span class="dv">58</span>] terra_1<span class="fl">.5</span><span class="dv">-21</span>       LearnBayes_2.<span class="fl">15.1</span>  MASS_7<span class="fl">.3</span><span class="dv">-56</span></span>
+<span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a> [<span class="dv">61</span>] scales_1.<span class="fl">2.0</span>       expm_0<span class="fl">.999</span><span class="dv">-6</span>       spatialreg_1<span class="fl">.2</span><span class="dv">-3</span></span>
+<span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a> [<span class="dv">64</span>] gridExtra_2<span class="fl">.3</span>      rpart_4.<span class="fl">1.16</span>       stringi_1.<span class="fl">7.6</span></span>
+<span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a> [<span class="dv">67</span>] fastDummies_1.<span class="fl">6.3</span>  e1071_1<span class="fl">.7</span><span class="dv">-9</span>        checkmate_2.<span class="fl">2.0</span></span>
+<span id="cb3-50"><a href="#cb3-50" aria-hidden="true" tabindex="-1"></a> [<span class="dv">70</span>] boot_1<span class="fl">.3</span><span class="dv">-28</span>        spData_2.<span class="fl">0.1</span>       Rdpack_2<span class="fl">.3</span></span>
+<span id="cb3-51"><a href="#cb3-51" aria-hidden="true" tabindex="-1"></a> [<span class="dv">73</span>] rlang_1.<span class="fl">1.1</span>        pkgconfig_2.<span class="fl">0.3</span>    evaluate_0<span class="fl">.15</span></span>
+<span id="cb3-52"><a href="#cb3-52" aria-hidden="true" tabindex="-1"></a> [<span class="dv">76</span>] lattice_0<span class="fl">.20</span><span class="dv">-45</span>    purrr_1.<span class="fl">0.1</span>        sf_1<span class="fl">.0</span><span class="dv">-13</span></span>
+<span id="cb3-53"><a href="#cb3-53" aria-hidden="true" tabindex="-1"></a> [<span class="dv">79</span>] labeling_0.<span class="fl">4.2</span>     htmlwidgets_1.<span class="fl">5.4</span>  cowplot_1.<span class="fl">1.1</span></span>
+<span id="cb3-54"><a href="#cb3-54" aria-hidden="true" tabindex="-1"></a> [<span class="dv">82</span>] tidyselect_1.<span class="fl">2.0</span>   parallelly_1.<span class="fl">34.0</span>  magrittr_2.<span class="fl">0.3</span></span>
+<span id="cb3-55"><a href="#cb3-55" aria-hidden="true" tabindex="-1"></a> [<span class="dv">85</span>] R6_2.<span class="fl">5.1</span>           generics_0.<span class="fl">1.2</span>     DBI_1.<span class="fl">1.2</span></span>
+<span id="cb3-56"><a href="#cb3-56" aria-hidden="true" tabindex="-1"></a> [<span class="dv">88</span>] pillar_1.<span class="fl">9.0</span>       foreign_0<span class="fl">.8</span><span class="dv">-82</span>     withr_2.<span class="fl">5.0</span></span>
+<span id="cb3-57"><a href="#cb3-57" aria-hidden="true" tabindex="-1"></a> [<span class="dv">91</span>] units_0<span class="fl">.8</span><span class="dv">-0</span>        stars_0<span class="fl">.6</span><span class="dv">-1</span>        abind_1<span class="fl">.4</span><span class="dv">-5</span></span>
+<span id="cb3-58"><a href="#cb3-58" aria-hidden="true" tabindex="-1"></a> [<span class="dv">94</span>] nnet_7<span class="fl">.3</span><span class="dv">-17</span>        tibble_3.<span class="fl">2.1</span>       future.apply_1.<span class="fl">9.0</span></span>
+<span id="cb3-59"><a href="#cb3-59" aria-hidden="true" tabindex="-1"></a> [<span class="dv">97</span>] car_3<span class="fl">.1</span><span class="dv">-2</span>          crayon_1.<span class="fl">5.1</span>       KernSmooth_2<span class="fl">.23</span><span class="dv">-20</span></span>
+<span id="cb3-60"><a href="#cb3-60" aria-hidden="true" tabindex="-1"></a>[<span class="dv">100</span>] utf8_1.<span class="fl">2.2</span>         rmarkdown_2<span class="fl">.14</span>     grid_4.<span class="fl">2.0</span></span>
+<span id="cb3-61"><a href="#cb3-61" aria-hidden="true" tabindex="-1"></a>[<span class="dv">103</span>] data.table_1.<span class="fl">14.2</span>  digest_0.<span class="fl">6.29</span>      classInt_0<span class="fl">.4</span><span class="dv">-3</span></span>
+<span id="cb3-62"><a href="#cb3-62" aria-hidden="true" tabindex="-1"></a>[<span class="dv">106</span>] tidyr_1.<span class="fl">3.0</span>        munsell_0.<span class="fl">5.0</span>      viridisLite_0.<span class="fl">4.0</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="github-repository" class="level1">
+<h1>GitHub repository</h1>
+<p>The content of these folders are also available in the following GitHub repository: <a href="https://github.com/spatialstatisticsupna/Scalable_Prediction" class="uri">https://github.com/spatialstatisticsupna/Scalable_Prediction</a></p>
+</section>
+<section id="acknowledgements" class="level1">
+<h1>Acknowledgements</h1>
+<p>This research has been supported by the project PID2020-113125RBI00/MCIN/AEI/10.13039/501100011033.</p>
+<p><img src="./micin-aei.jpg" class="img-fluid"></p>
+</section>
+<section id="references" class="level1">
+<h1>References</h1>
+<p><a href="https://arxiv.org/abs/2303.16549">Orozco-Acosta, E., Riebler, A., Adin, A., and Ugarte, M.D.&nbsp;(2023). A scalable approach for short-term disease forecasting in high spatial resolution areal data. <em>Biometrical Journal (accepted)</em></a></p>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+          // target, if specified
+          link.setAttribute("target", "_blank");
+      }
+    }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
