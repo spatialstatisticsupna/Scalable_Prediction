@@ -3,11 +3,12 @@ title: "A scalable approach for short-term disease forecasting in high spatial r
 author: "Orozco-Acosta, E., Riebler, A., Adin, A., and Ugarte, M.D."
 date: today
 date-format: "MMMM, YYYY"
-format: 
+format:
   html:
     toc: true
     link-external-newwindow: true
-keep-md: true
+    keep-md: true
+  gfm: default
 editor: visual
 ---
 
