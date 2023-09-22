@@ -1,41 +1,28 @@
----
-title: "A scalable approach for short-term disease forecasting in high spatial resolution areal data"
-author: "Orozco-Acosta, E., Riebler, A., Adin, A., and Ugarte, M.D."
-date: today
-date-format: "MMMM, YYYY"
-format:
-  html:
-    toc: true
-    link-external-newwindow: true
-    keep-md: true
-  gfm: default
-editor: visual
----
+# A scalable approach for short-term disease forecasting in high spatial resolution areal data
 
-
-
-This repository contains the R code to reproduce the analyses presented in the paper entitled *"A scalable approach for short-term disease forecasting in high spatial resolution areal data"* [(Orozco-Acosta et al., 2023)](https://arxiv.org/abs/2303.16549). Specifically, it contains several scripts to reproduce the ***Predictive validation study*** and ***Illustration*** sections of the paper. Note that due to confidentiality issues, simulated data sets are provided, and hence, results are not fully reproducible.
+This repository contains the R code to reproduce the analyses presented in the paper entitled _"A scalable approach for short-term disease forecasting in high spatial resolution areal data"_ [(Orozco-Acosta et al., 2023)](https://arxiv.org/abs/2303.16549). Specifically, it contains several scripts to reproduce the **_Predictive validation study_** and **_Illustration_** sections of the paper. Note that due to confidentiality issues, simulated data sets are provided, and hence, results are not fully reproducible.
 
 Model fitting is performed using the `STCAR_INLA()` function of the R package [**bigDM**](https://cran.r-project.org/web/packages/bigDM/index.html). The package also includes several univariate and multivariate spatial and spatio-temporal Bayesian models for high-dimensional areal count data based on the integrated nested Laplace approximation (INLA) estimation technique (http://www.r-inla.org/).
 
-See <https://github.com/spatialstatisticsupna/bigDM> for details about installation and access to the vignettes accompanying this package.
+See [https://github.com/spatialstatisticsupna/bigDM](https://github.com/spatialstatisticsupna/bigDM) for details about installation and access to the vignettes accompanying this package.
+
 
 ## Table of contents
 
--   [Data](#Data)
--   [R code](#R-code)
--   [Acknowledgements](#Acknowledgements)
--   [References](#References)
+- [Data](#Data)
+- [R code](#R-code)
+- [Acknowledgements](#Acknowledgements)
+- [References](#References)
 
-## Data {#data}
+
+## Data
 
 The proposed methodology is applied to project male lung cancer and overall cancer (all sites) mortality data in the 7907 municipalities of continental Spain by considering three-year ahead predictions using the period 1991-2012 as reference.
 
 Please, note that data used in this paper are subject to confidentiality agreements with the Spanish Statistical Office (INE), as we analyze cancer mortality data at the municipal level in Spain (NUTS4 level from the European nomenclature of territorial units for statistics).
 
 However, we provide a simulated data of male lung cancer mortality counts, which have been modified in order to preserve the confidentiality of the original data. The data can be directly loaded in R through our package **bigDM** by using the command
-
-``` r
+```r
 > library(bigDM)
 > data(Data_LungCancer, package="bigDM")
 
@@ -49,11 +36,17 @@ However, we provide a simulated data of male lung cancer mortality counts, which
 6 01008 1991   0 0.29240328 0.000000  354.80
 ```
 
-The `Data_LungCancer` object contains the following variables: - `ID`: character vector of geographic identifiers - `year`: numeric vector of years identifiers - `obs`: observed number of cases - `exp`: expected number of cases - `SMR`: standardized mortality ratios - `pop`: population at risk
+The `Data_LungCancer` object contains the following variables:
+- ```ID```: character vector of geographic identifiers
+- ```year```: numeric vector of years identifiers
+- ```obs```: observed number of cases
+- ```exp```: expected number of cases
+- ```SMR```: standardized mortality ratios
+- ```pop```: population at risk
+
 
 Similarly, an `.Rdata` file containing simulated data of male overall cancer mortality counts can be loaded as:
-
-``` r
+```r
 > load("./Data/Data_OverallCancer.Rdata")
 
 > head(Data_OverallCancer)
@@ -66,7 +59,8 @@ Similarly, an `.Rdata` file containing simulated data of male overall cancer mor
 6 01008 1991   2 1.0323942 1.9372445  354.80
 ```
 
-## R code {#r-code}
+
+## R code
 
 The [R code](./Rcode/) of this repository is organized according to the corresponding sections of the paper.
 
@@ -76,48 +70,45 @@ The script [Section4_PredictiveValidationStudy.R](./Rcode/Section4_PredictiveVal
 
 The script is structured in four main steps:
 
-1.  **Generate the 8 validation configurations**
+1. **Generate the 8 validation configurations**
 
     As described in the paper, each configuration uses $T=15$ years of data to fit the model and predict at time points $T+1$, $T+2$ and $T+3$. The first configuration uses data from 1991 to 2005, the second configuration from 1992 to 2006, while the last configuration uses data from 1998 to 2012.
-
-2.  **Fit the models with INLA using the `STCAR_INLA()` function**
+  
+2. **Fit the models with INLA using the `STCAR_INLA()` function**
 
     The script allows to select the model to be fitted using the `model` (one of either `"Classical"`, `"Disjoint"` or `"1st-order nb"`) and `interaction` (one of either `"TypeI"`, `"TypeII"`, `"TypeIII"` or `"TypeIV"`) arguments. Each combination of these arguments will reproduce a line of Table 2.
 
     Please, note that an alternative approximation strategy of INLA (not considered in the paper) has been set by default to speed up computations.
 
-3.  **Compute model assessment criteria**
+3. **Compute model assessment criteria**
 
     After fitting the models for each configuration, several measures (MAE - mean absolute error, RMSE - root mean square error, IS - interval score) are computed to assess their predictive performance. The results will reproduce similar values to those presented in Table 2, as well as Tables A1 and A2 of the Appendix section. The results are stored in the `results/` folder.
-
+  
     **CAUTION!** These computations might be very time consuming in Windows OS.
 
-4.  **Compute Figure 2**
-
+4. **Compute Figure 2**
+   
     R code to reproduce Figure 2: *One, two and three-year ahead predictions for the municipalities of Madrid, Palencia and Ávila using the disjoint model (left column) and 1st-order neighbourhood model (right column) with Type IV interactions.*
 
 ### Section 5 - Illustration: projections of cancer mortality in Spain
 
--   The script [Section5_FitModels.R](./Rcode/Section5_FitModels.R) allows to replicate the fit of spatio-temporal *classical* and *partition* models described in the illustration section of Orozco-Acosta et al. (2023) using the [bigDM](https://github.com/spatialstatisticsupna/bigDM) package. The code can be used with any other data sets with similar structure. It also computes the Logarithmic Score (based on both LOOCV and LGOCV approaches) and model selection criteria as DIC and WAIC.
+- The script [Section5_FitModels.R](./Rcode/Section5_FitModels.R) allows to replicate the fit of spatio-temporal *classical* and *partition* models described in the illustration section of Orozco-Acosta et al. (2023) using the [bigDM](https://github.com/spatialstatisticsupna/bigDM) package. The code can be used with any other data sets with similar structure. It also computes the Logarithmic Score (based on both LOOCV and LGOCV approaches) and model selection criteria as DIC and WAIC.
 
     To reproduce the results shown in **Table 3**, all the models must be previously fitted following the code described in the script. To compute the Logarithmic Score measures for the partition models (i.e., *Disjoint* and *1st-order neighbourhood* models) their corresponding sub-models must be also saved by setting the argument `STCAR_INLA(..., save.models=TRUE)`. Please, note that this function will automatically create a "temp" folder in the current working directory.
 
     **CAUTION!** These computations are very time consuming (several hours) and generate rather large `.Rdata` files (several Gb) for each of the models.
 
--   The script [Section5_Figures_and_Tables.R](./Rcode/Section5_Figures_and_Tables.R) contains the necessary functions to replicate the figures and tables of Section 5.1 (*Lung cancer mortality*) and Section 5.2 (*Overall cancer mortality*). Note that slightly different results are obtained since we are using simulated counts to preserve the confidentiality of the original data.
+- The script [Section5_Figures_and_Tables.R](./Rcode/Section5_Figures_and_Tables.R) contains the necessary functions to replicate the figures and tables of Section 5.1 (*Lung cancer mortality*) and Section 5.2 (*Overall cancer mortality*). Note that slightly different results are obtained since we are using simulated counts to preserve the confidentiality of the original data.
 
-    In order to avoid fitting the models (see [Section5_FitModels.R](./Rcode/Section5_FitModels.R) for details), the final INLA models (1st-order neighbourhood + Type IV interaction) can be downloaded from <https://emi-sstcdapp.unavarra.es/bigDM/inst/Rdata/>.
+    In order to avoid fitting the models (see [Section5_FitModels.R](./Rcode/Section5_FitModels.R) for details), the final INLA models (1st-order neighbourhood + Type IV interaction) can be downloaded from [https://emi-sstcdapp.unavarra.es/bigDM/inst/Rdata/](https://emi-sstcdapp.unavarra.es/bigDM/inst/Rdata/).
 
 ### Auxiliary functions
 
 The script [Auxiliary_functions.R](./Rcode/Auxiliary_functions.R) contains several additional functions to perform the analyses described in the paper, so that the results are reproducible when using an alternative (but similarly structured) data.
 
+
 ### R and R packages. Version info
-
-
-::: {.cell}
-
-```{.r .cell-code}
+``` {r}
 R version 4.2.0 (2022-04-22)
 Platform: x86_64-pc-linux-gnu (64-bit)
 Running under: CentOS Linux 7 (Core)
@@ -181,19 +172,15 @@ loaded via a namespace (and not attached):
 [103] data.table_1.14.2  digest_0.6.29      classInt_0.4-3
 [106] tidyr_1.3.0        munsell_0.5.0      viridisLite_0.4.0
 ```
-:::
 
 
-# GitHub repository
-
-The content of these folders are also available in the following GitHub repository: <https://github.com/spatialstatisticsupna/Scalable_Prediction>
-
-# Acknowledgements {#acknowledgements}
+# Acknowledgements
 
 This research has been supported by the project PID2020-113125RBI00/MCIN/AEI/10.13039/501100011033.
 
 ![](./micin-aei.jpg)
 
-# References {#references}
 
-[Orozco-Acosta, E., Riebler, A., Adin, A., and Ugarte, M.D. (2023). A scalable approach for short-term disease forecasting in high spatial resolution areal data. *Biometrical Journal (accepted)*](https://arxiv.org/abs/2303.16549)
+# References
+
+[Orozco-Acosta, E., Riebler, A., Adin, A., and Ugarte, M.D. (2023). A scalable approach for short-term disease forecasting in high spatial resolution areal data. *Biometrical Journal (accepted)*.](https://arxiv.org/abs/2303.16549)
