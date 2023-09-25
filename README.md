@@ -19,9 +19,7 @@ See [https://github.com/spatialstatisticsupna/bigDM](https://github.com/spatials
 
 Our methodology is employed to forecast male lung cancer and overall cancer (all sites) mortality data across the 7,907 municipalities in continental Spain. This forecast extends three years into the future, using the reference period of 1991-2012.
 
-Please, note that data used in this paper are subject to confidentiality agreements with the Spanish Statistical Office (INE), as we analyze cancer mortality data at the municipal level in Spain (NUTS4 level from the European nomenclature of territorial units for statistics).
-
-Then, synthetic data comparable to the original data in size and structure have been included. The data can be directly loaded in R through our package **bigDM** by using the command
+Please, note that data used in this paper are subject to confidentiality agreements with the Spanish Statistical Office (INE), as we analyze cancer mortality data at the municipal level in Spain (NUTS4 level from the European nomenclature of territorial units for statistics). Then, synthetic data comparable to the original data in size and structure have been included. The data can be directly loaded in R through our package **bigDM** by using the command
 ```r
 > library(bigDM)
 > data(Data_LungCancer, package="bigDM")
