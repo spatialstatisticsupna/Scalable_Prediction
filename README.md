@@ -2,7 +2,7 @@
 
 This repository contains the R code to reproduce the analyses presented in the paper entitled _"A scalable approach for short-term disease forecasting in high spatial resolution areal data"_ [(Orozco-Acosta et al., 2023)](https://arxiv.org/abs/2303.16549). Specifically, it contains several scripts to reproduce the **_Predictive validation study_** and **_Illustration_** sections of the paper. Note that due to confidentiality issues, simulated data sets are provided, and hence, results are not fully reproducible.
 
-Model fitting is performed using the `STCAR_INLA()` function of the R package [**bigDM**](https://cran.r-project.org/web/packages/bigDM/index.html). The package also includes several univariate and multivariate spatial and spatio-temporal Bayesian models for high-dimensional areal count data based on the integrated nested Laplace approximation (INLA) estimation technique (http://www.r-inla.org/).
+Model fitting is performed using the `STCAR_INLA()` function of the R package [**bigDM**](https://cran.r-project.org/web/packages/bigDM/index.html). The package also includes several univariate and multivariate spatial and spatio-temporal Bayesian models for high-dimensional areal count data fitted using the integrated nested Laplace approximation (INLA) estimation technique (http://www.r-inla.org/).
 
 See [https://github.com/spatialstatisticsupna/bigDM](https://github.com/spatialstatisticsupna/bigDM) for details about installation and access to the vignettes accompanying this package.
 
@@ -17,11 +17,11 @@ See [https://github.com/spatialstatisticsupna/bigDM](https://github.com/spatials
 
 ## Data
 
-The proposed methodology is applied to project male lung cancer and overall cancer (all sites) mortality data in the 7907 municipalities of continental Spain by considering three-year ahead predictions using the period 1991-2012 as reference.
+Our methodology is employed to forecast male lung cancer and overall cancer (all sites) mortality data across the 7,907 municipalities in continental Spain. This forecast extends three years into the future, using the reference period of 1991-2012.
 
 Please, note that data used in this paper are subject to confidentiality agreements with the Spanish Statistical Office (INE), as we analyze cancer mortality data at the municipal level in Spain (NUTS4 level from the European nomenclature of territorial units for statistics).
 
-However, we provide a simulated data of male lung cancer mortality counts, which have been modified in order to preserve the confidentiality of the original data. The data can be directly loaded in R through our package **bigDM** by using the command
+Then, synthetic data comparable to the original data in size and structure have been included. The data can be directly loaded in R through our package **bigDM** by using the command
 ```r
 > library(bigDM)
 > data(Data_LungCancer, package="bigDM")
@@ -38,7 +38,7 @@ However, we provide a simulated data of male lung cancer mortality counts, which
 
 The `Data_LungCancer` object contains the following variables:
 - ```ID```: character vector of geographic identifiers
-- ```year```: numeric vector of years identifiers
+- ```year```: numeric vector containing year identifiers
 - ```obs```: observed number of cases
 - ```exp```: expected number of cases
 - ```SMR```: standardized mortality ratios
@@ -66,7 +66,7 @@ The [R code](./Rcode/) of this repository is organized according to the correspo
 
 ### Section 4 - Predictive validation study
 
-The script [Section4_PredictiveValidationStudy.R](./Rcode/Section4_PredictiveValidationStudy.R) enables the replication of the predictive validation study presented in Section 4 of Orozco-Acosta et al. (2023) using simulated data for male lung cancer mortality counts. Similar results to those presented in Table 2, Table A1 and Table A2 will be obtained.
+The script [Section4_PredictiveValidationStudy.R](./Rcode/Section4_PredictiveValidationStudy.R) enables the replication of the predictive validation study presented in Section 4 of Orozco-Acosta et al. (2023) using synthetic data. Similar results to those presented in Table 2, Table A1 and Table A2 will be obtained.
 
 The script is structured in four main steps:
 
@@ -78,7 +78,7 @@ The script is structured in four main steps:
 
     The script allows to select the model to be fitted using the `model` (one of either `"Classical"`, `"Disjoint"` or `"1st-order nb"`) and `interaction` (one of either `"TypeI"`, `"TypeII"`, `"TypeIII"` or `"TypeIV"`) arguments. Each combination of these arguments will reproduce a line of Table 2.
 
-    Please, note that an alternative approximation strategy of INLA (not considered in the paper) has been set by default to speed up computations.
+    Please note that we have set an alternative approximation strategy for INLA (which was not discussed in the paper) as the default option to expedite computations.
 
 3. **Compute model assessment criteria**
 
