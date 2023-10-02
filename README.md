@@ -35,6 +35,7 @@ Then, synthetic data comparable to the original data in size and structure have 
 5 01006 1991   0 0.06999827 0.000000   62.81
 6 01008 1991   0 0.29240328 0.000000  354.80
 ```
+A copy of this data has also been included in the `data/` folder.
 
 The `Data_LungCancer` object contains the following variables:
 - ```ID```: character vector of geographic identifiers
@@ -47,7 +48,7 @@ The `Data_LungCancer` object contains the following variables:
 
 Similarly, an `.Rdata` file containing simulated data of male overall cancer mortality counts can be loaded as:
 ```r
-> load("./Data/Data_OverallCancer.Rdata")
+> load("./data/Data_OverallCancer.Rdata")
 
 > head(Data_OverallCancer)
      ID year obs       exp       SMR     pop
@@ -100,7 +101,7 @@ The script is structured in four main steps:
 
 - The script [Section5_Figures_and_Tables.R](./Rcode/Section5_Figures_and_Tables.R) contains the necessary functions to replicate the figures and tables of Section 5.1 (*Lung cancer mortality*) and Section 5.2 (*Overall cancer mortality*). Note that slightly different results are obtained since we are using simulated counts to preserve the confidentiality of the original data.
 
-    In order to avoid fitting the models (see [Section5_FitModels.R](./Rcode/Section5_FitModels.R) for details), the final INLA models (1st-order neighbourhood + Type IV interaction) can be downloaded from [https://emi-sstcdapp.unavarra.es/bigDM/inst/Rdata/](https://emi-sstcdapp.unavarra.es/bigDM/inst/Rdata/).
+    In order to avoid fitting the models (see [Section5_FitModels.R](./Rcode/Section5_FitModels.R) for details), the final INLA models (1st-order neighbourhood + Type IV interaction) can be downloaded from [https://figshare.com/articles/dataset/Scalable_prediction/24229951](https://figshare.com/articles/dataset/Scalable_prediction/24229951).
 
 ### Auxiliary functions
 
