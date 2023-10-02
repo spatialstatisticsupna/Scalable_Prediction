@@ -119,6 +119,11 @@ MODELS.k1 <- lapply(type, function(x){
 })
 
 
+## Save the final model (1st-order neighbourhood + Type IV interaction) ##
+k1_TypeIV <- MODELS.k1$TypeIV
+save(k1_TypeIV, file=paste("../results/INLAmodels_",cancer,"Cancer.Rdata",sep=""))
+
+
 ########################
 ## 4) Compute Table 3 ##
 ########################

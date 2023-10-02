@@ -6,6 +6,7 @@ library(Hmisc)
 library(INLA)
 library(RColorBrewer)
 library(tmap)
+options(timeout=600)
 
 setwd(dirname(rstudioapi::getSourceEditorContext()$path))
 source("Auxiliary_functions.R")
@@ -24,7 +25,11 @@ head(Carto_SpainMUN)
 
 
 ## Load final model (1st-order neighbourhood + Type IV interaction) fitted using INLA ##
-load(url("https://emi-sstcdapp.unavarra.es/bigDM/inst/Rdata/INLAmodel_LungCancer.Rdata"))
+## Option 1: Load the previously fitted model using the 'Section5_FitModel.R' script ##
+# load("../results/INLAmodel_LungCancer.Rdata")
+
+## Option 2: Download the fitted model from fighshare ##
+load(url("https://figshare.com/ndownloader/files/42527605"))
 
 model <- k1_TypeIV
 summary(model)
@@ -177,7 +182,11 @@ head(Carto_SpainMUN)
 
 
 ## Load final model (1st-order neighbourhood + Type IV interaction) fitted using INLA ##
-load(url("https://emi-sstcdapp.unavarra.es/bigDM/inst/Rdata/INLAmodel_OverallCancer.Rdata"))
+## Option 1: Load the previously fitted model using the 'Section5_FitModel.R' script ##
+# load("../results/INLAmodel_OverallCancer.Rdata")
+
+## Option 2: Download the fitted model from fighshare ##
+load(url("https://figshare.com/ndownloader/files/42527620"))
 
 model <- k1_TypeIV
 summary(model)
