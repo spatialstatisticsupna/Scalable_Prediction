@@ -171,12 +171,17 @@ print(TableA1)
 TableA2 <- lapply(table.columns, function(x) aux$`Table A2`[x,])
 print(TableA2)
 
-save(list=c("Table2","TableA1","TableA2"), file="../results/ValidationStudy_Tables.Rdata")
+save(list=c("Table2","TableA1","TableA2"),
+     file=paste0("../results/ValidationStudy_Tables_",model,"_",interaction,".Rdata"))
 
 
 #########################
 ## 4) Compute Figure 2 ##
 #########################
+
+## Please note that only the left column graphs of the figure (Disjoint model - Type IV) will be generated.
+## To fully reproduce Figure 2, rerun the script with the arguments model <- "1st-order nb" and interaction <- "TypeIV" (lines 61-62).
+
 source("Auxiliary_functions.R")
 
 count.pred <- lapply(models.INLA[[interaction]], function(x) compute.pred(x, ID.area=c("28079","34120","05019")))
@@ -200,8 +205,8 @@ Figure2a <- plot.Figure2(rate.pred$`28079`, title=paste(model,"model -",interact
 Figure2b <- plot.Figure2(rate.pred$`34120`, title=paste(model,"model -",interaction,"- Palencia"))
 
 ## AVILA (05019) ##
-Figure2c <- plot.Figure2(rate.pred$`05019`, title=paste(model,"model -",interaction,"- Palencia"))
+Figure2c <- plot.Figure2(rate.pred$`05019`, title=paste(model,"model -",interaction,"- Avila"))
 
 ## Save the plots ##
 ggarrange(Figure2a, Figure2b, Figure2c, nrow=3)
-ggsave(filename="../results/ValidationStudy_Figure2.pdf", width=7.4, height=9)
+ggsave(filename=paste0("../results/ValidationStudy_Figure2_",model,"_",interaction,".pdf"), width=3.6, height=9)
