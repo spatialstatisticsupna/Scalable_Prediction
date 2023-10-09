@@ -89,7 +89,8 @@ The script is structured in four main steps:
 
 4. **Compute Figure 2**
    
-    R code to reproduce Figure 2: *One, two and three-year ahead predictions for the municipalities of Madrid, Palencia and Ávila using the disjoint model (left column) and 1st-order neighbourhood model (right column) with Type IV interactions.*
+    Please note that only the left column graphs of the figure (Disjoint model - Type IV) will be generated. To fully reproduce Figure 2, rerun the script with the arguments `model <- "1st-order nb"` and `interaction <- "TypeIV"` (lines 61-62).
+    
 
 ### Section 5 - Illustration: projections of cancer mortality in Spain
 
