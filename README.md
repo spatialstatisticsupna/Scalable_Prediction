@@ -1,6 +1,6 @@
 # A scalable approach for short-term disease forecasting in high spatial resolution areal data
 
-This repository contains the R code to reproduce the analyses presented in the paper entitled _"A scalable approach for short-term disease forecasting in high spatial resolution areal data"_ [(Orozco-Acosta et al., 2023)](https://arxiv.org/abs/2303.16549). Specifically, it contains several scripts to reproduce the **_Predictive validation study_** and **_Illustration_** sections of the paper. Note that due to confidentiality issues, simulated data sets are provided, and hence, results are not fully reproducible.
+This repository contains the R code to reproduce the analyses presented in the paper entitled _"A scalable approach for short-term disease forecasting in high spatial resolution areal data"_ [(Orozco-Acosta et al., 2023)](https://doi.org/10.1002/bimj.202300096). Specifically, it contains several scripts to reproduce the **_Predictive validation study_** and **_Illustration_** sections of the paper. Note that due to confidentiality issues, simulated data sets are provided, and hence, results are not fully reproducible.
 
 Model fitting is performed using the `STCAR_INLA()` function of the R package [**bigDM**](https://cran.r-project.org/web/packages/bigDM/index.html). The package also includes several univariate and multivariate spatial and spatio-temporal Bayesian models for high-dimensional areal count data fitted using the integrated nested Laplace approximation (INLA) estimation technique (http://www.r-inla.org/).
 
@@ -183,4 +183,4 @@ This research has been supported by the project PID2020-113125RBI00/MCIN/AEI/10.
 
 # References
 
-[Orozco-Acosta, E., Riebler, A., Adin, A., and Ugarte, M.D. (2023). A scalable approach for short-term disease forecasting in high spatial resolution areal data. *Biometrical Journal (accepted)*.](https://arxiv.org/abs/2303.16549)
+[Orozco-Acosta, E., Riebler, A., Adin, A., and Ugarte, M.D. (2023). A scalable approach for short-term disease forecasting in high spatial resolution areal data. *Biometrical Journal*, 00, 2300096.](https://doi.org/10.1002/bimj.202300096)
