@@ -183,4 +183,4 @@ This research has been supported by the project PID2020-113125RBI00/MCIN/AEI/10.
 
 # References
 
-[Orozco-Acosta, E., Riebler, A., Adin, A., and Ugarte, M.D. (2023). A scalable approach for short-term disease forecasting in high spatial resolution areal data. *Biometrical Journal*, 00, 2300096.](https://doi.org/10.1002/bimj.202300096)
+[Orozco-Acosta, E., Riebler, A., Adin, A., and Ugarte, M.D. (2023). A scalable approach for short-term disease forecasting in high spatial resolution areal data. *Biometrical Journal*,  doi: https://doi.org/10.1002/bimj.202300096.](https://doi.org/10.1002/bimj.202300096)
